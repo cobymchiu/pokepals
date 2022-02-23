@@ -1,0 +1,36 @@
+// var used in multiple rules
+// one mixin in two or more rules
+// rules with nested selectors
+
+@width: 50px;
+@bold: bold;
+.text-setting(){
+    font-weight: @bold;
+    width:@width;
+}
+
+.health-bar{
+    .text-setting()
+}
+.stamina-bar{
+   .text-setting()
+}
+.power-bar{
+    .text-setting()
+}
+.agility-bar{
+    .text-setting()
+}
+.faq{
+    font-weight: @bold;
+}
+
+.accordion-item{
+    font-family: 'Courier New', Courier, monospace;
+    button{
+        font-weight: @bold;
+    }
+    .accordion-body{
+        font-size: large;
+    }
+}
