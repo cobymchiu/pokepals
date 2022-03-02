@@ -46,8 +46,19 @@
   .teamRow {
     display: table;
   }
-
-
+#navigation a:hover {
+  color: white;
+}
+#navigation a:active {
+  background-color: white;
+  color: white;
+}
+#search-bar:autofill{
+  border: 3px solid blue;
+}
+#search-bar:webkit-autofill{
+  border: 3px solid blue;
+}
 #search-bar {
   height: 46px;
   border-radius: 48px;
