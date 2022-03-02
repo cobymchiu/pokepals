@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <!--Sources/References
-    banner image: https://64.media.tumblr.com/870104d026f35051310431515a9e982b/tumblr_oxpwuhybPy1w1z10ao1_500h.jpg
+    banner images: 
+        https://64.media.tumblr.com/870104d026f35051310431515a9e982b/tumblr_oxpwuhybPy1w1z10ao1_500h.jpg
+        https://www.dualshockers.com/pokemon-lets-go-social-gameplay/
+-->
+
+<!--server url: https://cs4640.cs.virginia.edu/cc6hkb/cs4640-project/
+    extra credit google cloud url: https://storage.googleapis.com/cs4640-pokepals/index.html
 -->
 <html lang="en">
     <head>
@@ -8,12 +14,12 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1"> 
 
-        <meta name="author" content="Selena Johnson scj4ve">
-        <meta name="description" content="map with clickable areas to catch pokemon">
+        <meta name="author" content="Coby Chiu cc6hkb">
+        <meta name="description" content="home page of website">
         <meta name="keywords" content="feature page for sprint 2">        
     
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous"> 
-        <link rel="stylesheet/less" type="text/css" href="styles.less" />
+        <link rel="stylesheet/less" type="text/css" href="styles/styles.less" />
         <script src="https://cdn.jsdelivr.net/npm/less@4" ></script>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity= "sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"> </script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"crossorigin="anonymous"></script>
@@ -43,38 +49,51 @@
         <div class="container text-center">
             <h1>Welcome to the world of Pokemon</h1>
             <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                <img src="https://64.media.tumblr.com/870104d026f35051310431515a9e982b/tumblr_oxpwuhybPy1w1z10ao1_500h.jpg" class="d-block w-100" alt="...">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                    <img src="https://64.media.tumblr.com/870104d026f35051310431515a9e982b/tumblr_oxpwuhybPy1w1z10ao1_500h.jpg" class="d-block w-100" alt="banner of pokemon">
+                    </div>
+                    <div class="carousel-item">
+                    <img src="pictures/trainers.jpg" class="d-block w-100" alt="picture of trainers">
+                    </div>
+                    <!--<div class="carousel-item">
+                    <img src="..." class="d-block w-100" alt="...">
+                    </div>-->
                 </div>
-                <!--<div class="carousel-item">
-                <img src="..." class="d-block w-100" alt="...">
-                </div>
-                <div class="carousel-item">
-                <img src="..." class="d-block w-100" alt="...">
-                </div>-->
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
+                <!--<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>-->
             </div>            
         </div>
 
         <!---->
-        <div class="container row">
-            <div class="col-6">
-                <h2>Test Header</h2>
-                <p>Test paragraph</p>
+        <div class="container">
+            <div class="row text-center">
+                <h2>Catch, collect, and compare Pokemon with your friends!</h2>
+
+                <!--credit: https://codepen.io/johngerome/pen/jyrOrq-->
+                <div class="hr-theme-slash-2">
+                    <div class="hr-line"></div>
+                    <div class="hr-icon"><img src="pictures/pokeball.png" alt="pokeball" width="20px" height="20px"></div>
+                    <div class="hr-line"></div>
+                </div>
+                
+                <div class="col-6">
+                    <h2>Test Header</h2>
+                    <p>This is where some more information will go later</p>
+                </div>
+    
+                <div class="col-6">
+                    <h2>Test Header</h2>
+                    <p>This is where some more information will go later</p>
+                </div>
             </div>
 
-            <div class="col-4">
-                <h2>Test Header</h2>
-            </div>
         </div>
 
         <div id="footer"></div>

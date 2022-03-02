@@ -52,11 +52,18 @@ table {
 
 @width: 50px;
 @bold: bold;
-@maincolor:#2b78e4;
+@maincolor:#4f8be0;
 
 * {
     background-color: @maincolor !important;
     font-family: 'Balsamiq Sans', sans-serif !important;
+}
+
+footer{
+    .nav-item {
+        color:white !important;
+
+    }
 }
 
 .text-setting(){
@@ -64,37 +71,36 @@ table {
     width:@width;
 }
 
-.navbar {
+/*.navbar {
     #navbuttons {
         border-width: 3px;
         border-color: black;
         background-color: white;
     }
-}
-
-.health-bar{
-    .text-setting()
-}
-.stamina-bar{
-   .text-setting()
-}
-.power-bar{
-    .text-setting()
-}
-.agility-bar{
-    .text-setting()
-}
-.faq{
-    font-weight: @bold;
-}
-
-.accordion-item{
-    font-family: 'Courier New', Courier, monospace;
-    button{
-        font-weight: @bold;
+}*/
+#navigation a:hover {
+    color: white;
+  }
+  
+.carousel{
+    button {
+        background-color: white !important;
+        opacity: .5;
     }
-    .accordion-body{
-        font-size: large;
+    img{
+        width: 800px;
+        height: 400px;
     }
 }
 
+// credit: https://codepen.io/johngerome/pen/jyrOrq
+.hr-theme-slash-2 {
+    display: flex;
+    
+    .hr-line {
+      width: 100%;
+      position: relative;
+      margin: 15px;
+      border-bottom: 1px solid #fff;
+    }
+  }

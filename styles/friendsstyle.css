@@ -46,9 +46,7 @@
   .teamRow {
     display: table;
   }
-#navigation a:hover {
-  color: white;
-}
+
 #search-bar:focus {
 
   font-weight: bold;
