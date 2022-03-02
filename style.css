@@ -70,7 +70,8 @@
 ::placeholder{
   color:black;
 }
-
+/* styling for searchbar and submit button on same line
+https://codepen.io/Steddie/pen/nzKQRZ */
   .searchArea button {
     float: right;
     margin-left: -1px;
