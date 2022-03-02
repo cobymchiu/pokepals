@@ -49,9 +49,9 @@
 #navigation a:hover {
   color: white;
 }
-#navigation a:active {
-  background-color: white;
-  color: white;
+#search-bar:focus {
+
+  font-weight: bold;
 }
 #search-bar:autofill{
   border: 3px solid blue;
