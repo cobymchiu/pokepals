@@ -1,0 +1,81 @@
+/* @import url('https://fonts.googleapis.com/css?family=Josefin+Sans&display=swap'); */
+/* Searchbar styling https://dev.to/ara225/simple-search-bar-design-286a */
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  list-style: none;
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+/* body{
+   background-color: #f3f3f3;
+} */
+
+.user{
+  /* position: absolute; */
+  /* top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%); */
+  border-style: solid;
+  width: 60%;
+  display: flex;
+  /* box-shadow: 0 1px 20px 0 rgba(18, 21, 22, 0.08); */
+}
+
+.user .left{
+  width: 30%;
+  /* background: linear-gradient(to right,#01a9ac,#01dbdf); */
+  padding: 30px 25px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  text-align: center;
+  color: #fff;
+}
+
+.user .left img{
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.teamColumn {
+    float: left;
+    padding: 5px;
+  }
+  
+  .teamRow {
+    display: table;
+  }
+
+
+#search-bar {
+  height: 46px;
+  border-radius: 48px;
+  border: 0.5px solid lightgrey;
+  width: 100%;
+  padding-right: 40px;
+  padding-left: 10px;
+}
+::placeholder{
+  color:black;
+}
+
+  .searchArea button {
+    float: right;
+    margin-left: -1px;
+    border: solid 1px gray;
+   
+  }
+  .searchArea .inputDiv {
+    overflow: hidden;
+    border: solid 1px gray;
+  }
+ 
+  #search-btn {
+   
+    padding: 15px;
+    font-size: 1.1em;
+   background-color: white;
+    right: 15px;
+    border-left: 0.5px solid lightgrey;
+} 
