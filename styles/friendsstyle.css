@@ -1,5 +1,7 @@
 /* @import url('https://fonts.googleapis.com/css?family=Josefin+Sans&display=swap'); */
 /* Searchbar styling https://dev.to/ara225/simple-search-bar-design-286a */
+/* styling for searchbar and submit button on same line */
+/* https://codepen.io/Steddie/pen/nzKQRZ  */
 *{
   margin: 0;
   padding: 0;
@@ -8,59 +10,57 @@
   font-family: 'Josefin Sans', sans-serif;
 }
 
-/* body{
-   background-color: #f3f3f3;
-} */
 
-.user{
-  /* position: absolute; */
-  /* top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%); */
-  border-style: solid;
-  width: 60%;
-  display: flex;
-  /* box-shadow: 0 1px 20px 0 rgba(18, 21, 22, 0.08); */
+
+/* STYLING ROWS AND COLUMNS */
+[class*="Column"]{
+  float: left;
+  margin:20px;
 }
 
-.user .left{
-  width: 30%;
-  /* background: linear-gradient(to right,#01a9ac,#01dbdf); */
-  padding: 30px 25px;
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
-  text-align: center;
-  color: #fff;
+[class*="Row"]{
+  display: table;
 }
 
-.user .left img{
-  border-radius: 5px;
-  margin-bottom: 10px;
-}
 
-.teamColumn {
-    float: left;
-    padding: 5px;
-  }
+
+/*SEARCHBAR*/
+
+.searchArea button {
+  float: right;
+  margin-left: -1px;
+  border: solid 1px gray;
+  padding: 15px;
+  font-size: 1.1em;
+  background-color:rgba(255, 255, 255, 0.442);
+  right: 15px;
+  margin-right:10%;
   
-  .teamRow {
-    display: table;
-  }
+}
+
+.searchArea .inputDiv {
+  overflow: hidden;
+  border: solid 1px gray;
+  width:60%;
+  margin-left: 10%;
+}
 
 #search-bar:focus {
-
   font-weight: bold;
 }
+
 #search-bar:autofill{
   border: 3px solid blue;
 }
+
 #search-bar:webkit-autofill{
   border: 3px solid blue;
 }
+
 #search-bar {
   height: 46px;
   border-radius: 48px;
-  border: 0.5px solid lightgrey;
+  border: none;
   width: 100%;
   padding-right: 40px;
   padding-left: 10px;
@@ -68,24 +68,57 @@
 ::placeholder{
   color:black;
 }
-/* styling for searchbar and submit button on same line
-https://codepen.io/Steddie/pen/nzKQRZ */
-  .searchArea button {
-    float: right;
-    margin-left: -1px;
-    border: solid 1px gray;
-   
-  }
-  .searchArea .inputDiv {
-    overflow: hidden;
-    border: solid 1px gray;
-  }
  
-  #search-btn {
-   
-    padding: 15px;
-    font-size: 1.1em;
-   background-color: white;
-    right: 15px;
-    border-left: 0.5px solid lightgrey;
-} 
+
+/* MODAL */
+.modal-backdrop.fade.in{
+  opacity: 0.9!important;
+  filter: alpha(opacity=90)!important;
+  }
+
+#teamModal{
+  width:410px;
+  height:530px;
+  margin-left: 0px;
+  padding-bottom:50px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  overflow-y: hidden;
+}
+
+.modal-body{
+  border:none;
+  box-shadow: none;
+}
+
+
+
+/* USER INFO */
+.card{
+  height:500px;
+}
+
+.card-img-top{
+  height:300px;
+}
+
+
+
+/* TEAM STATS */
+.health-bar{
+    font-weight: bold;
+    width:50px;
+}
+.stamina-bar{
+  font-weight: bold;
+  width:50px;
+}
+.power-bar{
+  font-weight: bold;
+  width:50px;
+}
+.agility-bar{
+  font-weight: bold;
+    width:50px;
+}

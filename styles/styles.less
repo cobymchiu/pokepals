@@ -50,38 +50,26 @@ table {
 
 @import url('https://fonts.googleapis.com/css2?family=Balsamiq+Sans&display=swap | Balsamiq+Sans');
 
-@width: 50px;
-@bold: bold;
 @maincolor:#4f8be0;
 
-* {
-    background-color: @maincolor !important;
+*{
+    background-color: @maincolor;
     font-family: 'Balsamiq Sans', sans-serif !important;
 }
 
-footer{
-    .nav-item {
-        color:white !important;
-
-    }
+body{
+    background-color: @maincolor !important;
 }
 
-.text-setting(){
-    font-weight: @bold;
-    width:@width;
+.px-2{ //footer text color
+    color:rgba(255, 255, 255, 0.442) !important;
 }
 
-/*.navbar {
-    #navbuttons {
-        border-width: 3px;
-        border-color: black;
-        background-color: white;
-    }
-}*/
 #navigation a:hover {
     color: white;
   }
-  
+
+
 .carousel{
     button {
         background-color: white !important;
@@ -104,3 +92,31 @@ footer{
       border-bottom: 1px solid #fff;
     }
   }
+.center{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.exploreHeader{
+    text-align: center;
+}
+  //Settings for all models
+.modal-backdrop.fade.in{
+    opacity: 0.9!important;
+    filter: alpha(opacity=90)!important;
+    }
+//cntering a modal https://stackoverflow.com/questions/39627549/how-to-center-modal-to-the-center-of-screen
+#exampleModal{
+    width:360px;
+    height:530px;
+    margin-left: 0px;
+    padding-bottom:50px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    overflow-y: hidden;
+}
+.modal-body{
+    border:none;
+    box-shadow: none;
+}
