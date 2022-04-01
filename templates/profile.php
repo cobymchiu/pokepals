@@ -55,7 +55,7 @@
                     
                     <div class="card" style="width: 18rem;">
                         <!--<a id="lightMode">Light Mode</a>-->
-                        <img src="pictures/icon.jpg" class="card-img-top" alt="profile icon" width="150" height="200">
+                        <img src="pictures//profilePics/icon.jpg" class="card-img-top" alt="profile icon" width="150" height="200">
                         <div class="card-body">
                           <h5 class="card-title">Your name here</h5>
                           <p class="card-text">Some data about the trainer</p>

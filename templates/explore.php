@@ -18,7 +18,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-        <script src="jquery.rwdImageMaps.min.js"></script>
+        <script src="scripts/jquery.rwdImageMaps.min.js"></script>
         <title>Explore</title>
 
         <!--source:https://stackoverflow.com/questions/18712338/make-header-and-footer-files-to-be-included-in-multiple-html-pages-->
@@ -91,7 +91,7 @@
         <div class="modal" id="exampleModal" aria-hidden="true">
             <div class="modal-content modal-dialog">
                 <div class="modal-body">Searching for Pokemon...</div>
-                <img class="modal-content" src="..." alt="picture of pokemon found" id="img01">
+                <img class="modal-content" src="..." alt="image of pokemon" id="img01">
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ignore</button>
                 </div>

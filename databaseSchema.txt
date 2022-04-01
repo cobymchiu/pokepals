@@ -1,0 +1,33 @@
+//verify username is certain length
+
+create table user (
+    id int not null auto_increment,
+     email text not null, 
+     username text not null,
+     password text not null,
+     picture text not null,
+     bio text varchar(255),
+     primary key (id)
+ );
+
+ create table friends (
+     user1 int not null,
+     user2 int not null,
+     primary key (user1, user2),
+ )
+
+ create table friendRequest (
+     from int not null,
+     to int not null,
+     primary key (from, to),
+ )
+
+ create table team(
+     user int not null,
+     pokemon1 int not null,
+     pokemon2 int not null,
+     pokemon3 int not null,
+     pokemon4 int not null,
+     pokemon5 int not null,
+     pokemon6 int not null,
+ )

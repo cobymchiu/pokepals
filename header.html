@@ -26,7 +26,7 @@
       <header>
         <nav id="navigation" class="navbar navbar-expand-lg navbar-light">
             <div class="container-fluid">
-              <a class="navbar-brand" href="index.html" name="logo">
+              <a class="navbar-brand" href="?command=explore" name="logo">
                 <img alt="pokepals logo" src="pictures/pokeball.png" href="index.html" width="25px" height="25px"/>
                 PokePals
               </a>
@@ -37,9 +37,9 @@
               <div class="collapse navbar-collapse" id="navbarNav">
                 <div class="navbar-nav ms-auto ">
 
-                  <a class="nav-link" href="index.html">Home</a>
-                  <a class="nav-link" href="explore.html">Explore</a>
-                  <a class="nav-link" href="viewFriends.html" >Friends</a>
+                  <a class="nav-link" href="?command=explore">Home</a>
+                  <a class="nav-link" href="?command=explore">Explore</a>
+                  <a class="nav-link" href="?command=viewFriends" >Friends</a>
  
                   <!--when user is not logged in, this will just be a login button-->
                   <li class="nav-item dropdown">
@@ -47,11 +47,11 @@
                       My Profile
                     </a>
                     <ul class="dropdown-menu"style="background-color: #4f8be0;" aria-labelledby="navbarDropdown">
-                      <li><a class="dropdown-item" href="profile.html">Overview</a></li>
+                      <li><a class="dropdown-item" href="?command=profile">Overview</a></li>
                       <li><a class="dropdown-item" href="#">My Team</a></li>
                       <li><a class="dropdown-item" href="#">Pokedex</a></li>
                       <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="#">Logout</a></li>
+                      <li><a class="dropdown-item" href="?command=logout">Logout</a></li>
                     </ul>
                   </li>
 

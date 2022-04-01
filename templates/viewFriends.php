@@ -32,12 +32,12 @@
         <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
         <title>Friends</title>
     </head>
-    <body>
+    <body >
  
         <div id="header"></div>
         <h1 class="text-center">Friends List</h1>
        
-
+        
         <div class="searchArea">
             <form>
                 <button type="submit" id="search-btn">Submit</button>
@@ -49,35 +49,10 @@
         </div> <br><br>
         
         <!-- container for all friends -->
-        <div class="container" style="width:75%; height:53%; overflow-y:scroll"> 
+        <div class="container" style="width:75%; height:53vh; overflow-y:scroll"> 
             <div class="friendRow"> 
-
-                <div class="card friendColumn" style="width: 18rem;">
-                    <img class="card-img-top" src="pictures/ash.png" alt="Card image cap">
-                    <div class="card-body">
-                      <h5 class="card-title">@alexxwilliams</h5>
-                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#teamModal">View Team</button>
-                    </div>
-                </div>
-
-                <div class="card friendColumn" style="width: 18rem;">
-                    <img class="card-img-top" src="pictures/misty.jpg" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">@pikachugurl</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <button class="btn btn-primary">View Team</button>
-                    </div>
-                </div>
-
-                <div class="card friendColumn" style="width: 18rem;">
-                    <img class="card-img-top" src="pictures/brock.jpg" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">@wutever</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <button class="btn btn-primary">View Team</button>
-                    </div>
-                </div>
+                <?=$list?>
+                
 
             </div>
         </div>
