@@ -28,34 +28,38 @@ class PokemonController {
                 break;
             case "logout":
                 $this->destroySession();
+                break;
             case "login":
             default:
                 $this->login();
+                break;
         }
     }
 
     private function destroySession() {
-        session_destroy();    
+        session_destroy();   
+        header("Location: ?command=login");
     }
 
     private function login() {
         $error_msg="";
 
-        if (isset($_POST["email"],$_POST["name"], $_POST["password"] ) && !empty($_POST["email"])  && !empty($_POST["name"])  && !empty($_POST["password"])) { /// validate the email coming in
-            $data = $this->db->query("select * from user where email = ?;", "s", $_POST["email"]);
+        if (isset($_POST["email"]) && isset($_POST["name"]) && isset($_POST["password"])) {
+        //(isset($_POST["email"],$_POST["name"], $_POST["password"] ) && !empty($_POST["email"])  && !empty($_POST["name"])  && !empty($_POST["password"])) { /// validate the email coming in
+            $data = $this->db->query("select * from project_user where email = ?;", "s", $_POST["email"]);
             
             if ($data === false) {
                 $error_msg = "<div class='alert alert-danger'>Error checking for user</div>";
             }else if (empty($data)){ //if there is no user then insert them
                 if($this->validPass($_POST["password"])){
                     if($this->validEmail($_POST["email"])){
-                        $insert = $this->db->query("insert into user (name, email, password) values (?, ?, ?);", 
+                        $insert = $this->db->query("insert into project_user (username, email, password) values (?, ?, ?);", 
                         "sss", $_POST["name"], $_POST["email"], 
                         password_hash($_POST["password"], PASSWORD_DEFAULT));
                         if ($insert === false) {
                             $error_msg = "<div class='alert alert-danger'>Error creating account</div>";
                         }
-                        $data = $this->db->query("select * from user where email = ?;", "s", $_POST["email"]); //reload data after insert
+                        $data = $this->db->query("select * from project_user where email = ?;", "s", $_POST["email"]); //reload data after insert
                 
                     }else{//email not valid
                         $error_msg = "<div class='alert alert-danger'>invalid email</div>";
@@ -70,7 +74,7 @@ class PokemonController {
                 $error_msg = "<div class='alert alert-danger'><b>Error checking for user </div>";
             } else if (!empty($data)) {
                 if (password_verify($_POST["password"], $data[0]["password"])) {
-                    $_SESSION["name"] = $data[0]["name"];
+                    $_SESSION["name"] = $data[0]["username"];
                     $_SESSION["email"] = $data[0]["email"];
                     $_SESSION["id"] = $data[0]["id"];
                   
@@ -137,15 +141,15 @@ class PokemonController {
     private function viewFriends(){
         $user = $this->getCurrentUser();
 
-        $friendList = $this->db->query("select user2 from friends where user1=?", "i", $user["id"]);
-        $friendList2 = $this->db->query("select user1 from friends where user2=?", "i", $user["id"]);
+        $friendList = $this->db->query("select user2 from project_friends where user1=?", "i", $user["id"]);
+        $friendList2 = $this->db->query("select user1 from project_friends where user2=?", "i", $user["id"]);
         $list="";
         if(empty($friendList) && empty($friendList2)){
             $list = "No Friends to show";
         }else{
 
             foreach($friendList as $friendId){
-                $friend = $this->db->query("select id, email, picture, name from user where id=?", "i", $friendId["user2"]);
+                $friend = $this->db->query("select id, email, picture, name from project_user where id=?", "i", $friendId["user2"]);
                
                 $name = $friend[0]["name"];
                 $id = $friend[0]["id"];
@@ -163,7 +167,7 @@ class PokemonController {
             }
     
             foreach($friendList2 as $friendId){
-                $friend = $this->db->query("select id, email, picture, name from user where id=?", "i", $friendId["user1"]);
+                $friend = $this->db->query("select id, email, picture, name from project_user where id=?", "i", $friendId["user1"]);
     
                 $name = $friend[0]["name"];
                 $id = $friend[0]["id"];
