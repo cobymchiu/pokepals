@@ -17,6 +17,9 @@ class PokemonController {
             case "explore":
                 $this->explore();
                 break;
+            case "catch":
+                $this->catch();
+                break;
             case "viewFriends":
                 $this->viewFriends();
                 break;
@@ -105,17 +108,34 @@ class PokemonController {
 
     }
    
-   
+    public function catch(){
+        echo "called";
+        if($_POST["wild_pokemon"]){
+            if($_POST["wild_pokemon"] == "Ignore"){
+                include("templates/explore.php");
+            }else{
+                if(isset($_POST["pok"])){
+                    $c=$_POST["pok"];
+                    echo "<script>console.log('Debug Objects: GOT THE THING $c ' );</script>";
+                }
+                //insert id into team, take to profile
+            }
+        }
+       
+    }
     private function explore(){
+      
         include("templates/explore.php");
     }
-
-    private function viewFriends(){
-        $user = [
+    private function getCurrentUser(){
+        return [
             "name" => $_SESSION["name"],
             "email" => $_SESSION["email"],
             "id" => $_SESSION["id"]
         ];
+    }
+    private function viewFriends(){
+        $user = $this->getCurrentUser();
 
         $friendList = $this->db->query("select user2 from friends where user1=?", "i", $user["id"]);
         $friendList2 = $this->db->query("select user1 from friends where user2=?", "i", $user["id"]);
@@ -125,13 +145,14 @@ class PokemonController {
         }else{
 
             foreach($friendList as $friendId){
-                $friend = $this->db->query("select id, email, name from user where id=?", "i", $friendId["user2"]);
+                $friend = $this->db->query("select id, email, picture, name from user where id=?", "i", $friendId["user2"]);
                
                 $name = $friend[0]["name"];
                 $id = $friend[0]["id"];
+                $pic = $friend[0]["picture"];
                 $list = $list . "
                 <div class='card friendColumn' style='width: 18rem;'>
-                <img class='card-img-top' src='pictures/ash.png' alt='Card image cap'>
+                <img class='card-img-top' src='pictures/profilePics/$pic' alt='Card image cap'>
                 <div class='card-body'>
                   <h5 class='card-title'>@$name</h5>
                   <p class='card-text'>Some quick example text to build on the card title and make up the bulk of the card content.</p>
@@ -149,7 +170,7 @@ class PokemonController {
                 $pic = $friend[0]["picture"];
                 $list = $list . "
                 <div class='card friendColumn' style='width: 18rem;'>
-                <img class='card-img-top' src='pictures/$pic' alt='Card image cap'>
+                <img class='card-img-top' src='pictures/profilePics/$pic' alt='Card image cap'>
                 <div class='card-body'>
                   <h5 class='card-title'>@$name</h5>
                   <p class='card-text'>Some quick example text to build on the card title and make up the bulk of the card content.</p>
@@ -170,7 +191,11 @@ class PokemonController {
         include("templates/viewFriends.php");
     }
     private function profile(){
+        echo "<script>console.log('Debug Objects: ' );</script>";
+        
         include("templates/profile.php");
     }
+
+
    
 }

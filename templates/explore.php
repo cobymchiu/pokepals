@@ -55,10 +55,12 @@
                 result["types"].forEach(element => {
                     types_list.push(element["type"]["name"])
                 });
-                console.log("res is ", types_list);
+                console.log("res is ", result);
+                console.log("res is ", result["id"]);
                 var modalImg = document.getElementById("img01"); //space where picture will go in the modal
                 modalImg.src = result["sprites"]["front_default"]; //url for image
-
+                var labelName = document.getElementById("wild_pokemon_id");
+                labelName.value = result["id"];
                 $(".modal-body").html(chosen_pokemon_name +" <br>"+ types_list);
             
         });
@@ -88,16 +90,23 @@
         <!-- </div> -->
 
         <!-- Modal -->
+        
         <div class="modal" id="exampleModal" aria-hidden="true">
+        <form action="?command=catch" method="post">
             <div class="modal-content modal-dialog">
                 <div class="modal-body">Searching for Pokemon...</div>
                 <img class="modal-content" src="..." alt="image of pokemon" id="img01">
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ignore</button>
+                    
+                        <input type="submit" name="wild_pokemon" class="btn btn-secondary" data-bs-dismiss="modal" value="Catch">
+                        <input id="wild_pokemon_id" type="hidden" name="pok" value="9">
+                        <input type="submit" name="wild_pokemon" class="btn btn-secondary" data-bs-dismiss="modal" value="Ignore">
+                   
                 </div>
             </div>
+            </form>
         </div>
-
+       
         <div id="footer"></div>
     </body>
     
