@@ -39,8 +39,17 @@
 
                   <a class="nav-link" href="?command=explore">Home</a>
                   <a class="nav-link" href="?command=explore">Explore</a>
-                  <a class="nav-link" href="?command=viewFriends" >Friends</a>
- 
+                  
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Friends
+                    </a>
+                    <ul class="dropdown-menu"style="background-color: #4f8be0;" aria-labelledby="navbarDropdown">
+                      <li><a class="dropdown-item" href="?command=viewFriends">View Friends</a></li>
+                      <li><a class="dropdown-item" href="?command=addFriends">Add Friends</a></li>
+                      <li><a class="dropdown-item" href="?command=viewRequests">View Friend Requests</a></li>
+                    </ul>
+                  </li>
                   <!--when user is not logged in, this will just be a login button-->
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

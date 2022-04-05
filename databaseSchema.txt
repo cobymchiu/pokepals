@@ -31,3 +31,11 @@ create table user (
      pokemon5 int not null,
      pokemon6 int not null,
  )
+
+      
+//         $images = glob("pictures/profilePics/*");
+
+// foreach($images as $image)
+// {
+//   echo "<img class='card-img-top' src='$image' alt='Card image cap'>";
+// }

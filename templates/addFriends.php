@@ -35,11 +35,18 @@
     <body >
  
         <div id="header"></div>
-        <h1 class="text-center">Friends List</h1>
-        
+        <h1 class="text-center">Add Friends</h1>
        
+        
+        <div class="searchArea">
+            <form action="?command=addFriends" method="post">
+                <button type="submit" id="search-btn">Submit</button>
+                <div class="inputDiv">
+                    <input name="username_search" type="text" placeholder="Search..." id="search-bar"  />
+                </div>
+            </form>
             
-        <br><br><br> <br>
+        </div> <br><br>
         
         <!-- container for all friends -->
         <div class="container" style="width:75%; height:53vh; overflow-y:scroll"> 

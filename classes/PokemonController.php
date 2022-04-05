@@ -17,8 +17,23 @@ class PokemonController {
             case "explore":
                 $this->explore();
                 break;
+            case "addFriends":
+                $this->addFriends();
+                break;
+            case "sendRequest":
+                $this->sendRequest();
+                break;
+            case "acceptRequest":
+                $this->acceptRequest();
+                break;
+            case "rejectRequest":
+                $this->rejectRequest();
+                break;
+            case "viewRequests":
+                $this->viewRequests();
+                break;
             case "catch":
-                $this->catch();
+                $this->catchPokemon();
                 break;
             case "viewFriends":
                 $this->viewFriends();
@@ -45,7 +60,6 @@ class PokemonController {
         $error_msg="";
 
         if (isset($_POST["email"]) && isset($_POST["name"]) && isset($_POST["password"])) {
-        //(isset($_POST["email"],$_POST["name"], $_POST["password"] ) && !empty($_POST["email"])  && !empty($_POST["name"])  && !empty($_POST["password"])) { /// validate the email coming in
             $data = $this->db->query("select * from project_user where email = ?;", "s", $_POST["email"]);
             
             if ($data === false) {
@@ -112,15 +126,14 @@ class PokemonController {
 
     }
    
-    public function catch(){
-        echo "called";
+    public function catchPokemon(){
         if($_POST["wild_pokemon"]){
             if($_POST["wild_pokemon"] == "Ignore"){
                 include("templates/explore.php");
             }else{
-                if(isset($_POST["pok"])){
-                    $c=$_POST["pok"];
-                    echo "<script>console.log('Debug Objects: GOT THE THING $c ' );</script>";
+                if(isset($_POST["pokemonId"])){
+                    $pokemonId=$_POST["pokemonId"];
+                    echo "<script>console.log('Debug Objects: GOT THE THING $pokemonId ' );</script>";
                 }
                 //insert id into team, take to profile
             }
@@ -149,17 +162,19 @@ class PokemonController {
         }else{
 
             foreach($friendList as $friendId){
-                $friend = $this->db->query("select id, email, picture, name from project_user where id=?", "i", $friendId["user2"]);
+                $friend = $this->db->query("select id, email, picture, bio, username from project_user where id=?", "i", $friendId["user2"]);
                
-                $name = $friend[0]["name"];
+                $name = $friend[0]["username"];
                 $id = $friend[0]["id"];
                 $pic = $friend[0]["picture"];
+                
+                $bio = $friend[0]["bio"];
                 $list = $list . "
                 <div class='card friendColumn' style='width: 18rem;'>
                 <img class='card-img-top' src='pictures/profilePics/$pic' alt='Card image cap'>
                 <div class='card-body'>
                   <h5 class='card-title'>@$name</h5>
-                  <p class='card-text'>Some quick example text to build on the card title and make up the bulk of the card content.</p>
+                  <p class='card-text'>$bio</p>
                   <button class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#teamModal'>View Team</button>
                 </div>
             </div>";
@@ -167,37 +182,175 @@ class PokemonController {
             }
     
             foreach($friendList2 as $friendId){
-                $friend = $this->db->query("select id, email, picture, name from project_user where id=?", "i", $friendId["user1"]);
+                $friend = $this->db->query("select id, email, picture, username, bio from project_user where id=?", "i", $friendId["user1"]);
     
-                $name = $friend[0]["name"];
+                $name = $friend[0]["username"];
                 $id = $friend[0]["id"];
                 $pic = $friend[0]["picture"];
+                
+                $bio = $friend[0]["bio"];
                 $list = $list . "
                 <div class='card friendColumn' style='width: 18rem;'>
                 <img class='card-img-top' src='pictures/profilePics/$pic' alt='Card image cap'>
                 <div class='card-body'>
                   <h5 class='card-title'>@$name</h5>
-                  <p class='card-text'>Some quick example text to build on the card title and make up the bulk of the card content.</p>
+                  <p class='card-text'>$bio</p>
                   <button class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#teamModal'>View Team</button>
                 </div>
             </div>";
                
             }
         }
-       
-        
-//         $images = glob("pictures/profilePics/*");
-
-// foreach($images as $image)
-// {
-//   echo "<img class='card-img-top' src='$image' alt='Card image cap'>";
-// }
+   
         include("templates/viewFriends.php");
     }
+
     private function profile(){
-        echo "<script>console.log('Debug Objects: ' );</script>";
-        
+       
         include("templates/profile.php");
+    }
+
+    private function viewRequests(){
+        $user = $this->getCurrentUser();
+
+        $requestList = $this->db->query("select requestfrom from project_friendrequest where requestto=?", "i", $user["id"]);
+        
+        $list="";
+        if(empty($requestList)){
+            $list = "No requests to show";
+        }else{
+
+            foreach($requestList as $request){
+                $requestor = $this->db->query("select id, email, picture, bio, username from project_user where id=?", "i", $request["requestfrom"]);
+               
+                $name = $requestor[0]["username"];
+                $id = $requestor[0]["id"];
+                $pic = $requestor[0]["picture"];
+                
+                $bio = $requestor[0]["bio"];
+                $list = $list . "
+                <div class='card friendColumn' style='width: 18rem;'>
+                <img class='card-img-top' src='pictures/profilePics/$pic' alt='Card image cap'>
+                <div class='card-body'>
+                  <h5 class='card-title'>@$name</h5>
+                  <p class='card-text'>$bio</p>
+                  <form action='?command=acceptRequest' method='post'>
+                    <button class='btn btn-primary'>Accept</button>
+                    <input id='user_id' type='hidden' name='user_id' value='$id'>
+                </form>
+                <form action='?command=rejectRequest' method='post'>
+                    <button class='btn btn-primary'>Delete</button>
+                    <input id='user_id' type='hidden' name='user_id' value='$id'>
+                </form>
+                </div>
+            </div>";
+               
+            }
+        }
+    
+
+        include("templates/requestFriends.php");
+    }
+    private function sendRequest(){
+        $user = $this->getCurrentUser();
+        if(isset($_POST["user_id"])){
+            $stmt = $this->db->query("insert into project_friendrequest (requestfrom, requestto) values (?, ?)", "ii", $user["id"], $_POST["user_id"]);
+        }
+        header("Location: ?command=viewFriends");
+        // include("templates/addFriends.php");
+    }
+    private function rejectRequest(){
+        $user = $this->getCurrentUser();
+        if(isset($_POST["user_id"])){
+            $stmt = $this->db->query("delete from project_friendrequest where requestfrom =? and requestto=?", "ii", $_POST["user_id"], $user["id"]);
+        }
+        header("Location: ?command=viewRequests");
+        // include("templates/addFriends.php");
+    }
+    private function acceptRequest(){
+        $user = $this->getCurrentUser();
+        if(isset($_POST["user_id"])){
+            $deleterequest = $this->db->query("delete from project_friendrequest where requestfrom =? and requestto=?", "ii", $_POST["user_id"], $user["id"]);
+            $addAsFriend = $this->db->query("insert into project_friends (user1, user2) values (?,?)", "ii", $_POST["user_id"], $user["id"]);
+            
+        }
+        header("Location: ?command=viewRequests");
+        // include("templates/addFriends.php");
+    }
+//add friends,
+    private function addFriends(){
+        $user = $this->getCurrentUser();
+        if(isset($_POST["username_search"]) && !empty($_POST["username_search"])){
+            $searchMatches = $this->db->query("select username, id, picture, bio from project_user where username LIKE ? and id != ? and id not in (select user1 from project_friends)", "ss", "%".$_POST["username_search"]."%", $user["id"]);
+            $list="";
+            if(empty($searchMatches)){
+                $list = "No matches for '".$_POST["username_search"]."'";
+            }else{
+    
+                foreach($searchMatches as $matchingUser){
+                    // $friend = $this->db->query("select id, email, picture, name from project_user where id=?", "i", $friendId["user2"]);
+                   
+                    $name = $matchingUser["username"];
+                    $id = $matchingUser["id"];
+                    $pic = $matchingUser["picture"];
+                    
+                    $bio = $matchingUser["bio"];
+                    $list = $list . "
+                    <div class='card friendColumn' style='width: 18rem;'>
+                    <img class='card-img-top' src='pictures/profilePics/$pic' alt='Card image cap'>
+                    <div class='card-body'>
+                      <h5 class='card-title'>@$name</h5>
+                      <p class='card-text'>$bio</p>
+                      <form action='?command=sendRequest' method='post'>
+                        <button class='btn btn-primary'>Add Friend</button>
+                        <input id='user_id' type='hidden' name='user_id' value='$id'>
+                      </form>
+                    </div>
+                </div>";
+                }
+                // $list=print_r($friendList);
+                }
+            
+        }else{
+            $allUsers = $this->db->query("select username, id, picture, bio from project_user where id != ? and id not in (select user1 from project_friends) limit 15", "s", $user["id"]);
+            if(empty($allUsers)){
+                $list = "No users to show";
+            }else{
+                $list="";
+                foreach($allUsers as $randomUser){
+                    // $friend = $this->db->query("select id, email, picture, name from project_user where id=?", "i", $friendId["user2"]);
+                   
+                    $name = $randomUser["username"];
+                    $id = $randomUser["id"];
+                    $pic = $randomUser["picture"];
+                    $bio = $randomUser["bio"];
+                    $list = $list . "
+                    <div class='card friendColumn' style='width: 18rem;'>
+                    <img class='card-img-top' src='pictures/profilePics/$pic' alt='Card image cap'>
+                    <div class='card-body'>
+                      <h5 class='card-title'>@$name</h5>
+                      <p class='card-text'>$bio</p>
+                      <form action='?command=sendRequest' method='post'>
+                        <button class='btn btn-primary'>Add Friend</button>
+                        <input id='user_id' type='hidden' name='user_id' value='$id'>
+                      </form>
+                   
+                      </div>
+                </div>";
+                }
+                // $list=print_r($friendList);
+                }
+           
+        }
+        // $user = $this->getCurrentUser();
+
+        // $friendList = $this->db->query("select user2 from project_friends where user1=?", "i", $user["id"]);
+        // $friendList2 = $this->db->query("select user1 from project_friends where user2=?", "i", $user["id"]);
+        // $list="";
+        
+    
+               
+        include("templates/addFriends.php");
     }
 
 

@@ -4,6 +4,7 @@
 // extra credit google cloud url: https://storage.googleapis.com/cs4640-pokepals/index.html
 //https://stackoverflow.com/questions/17122218/get-all-the-images-from-a-folder-in-php
 //https://stackoverflow.com/questions/23711508/regular-expression-to-match-at-least-one-capital-letter-and-at-least-one-digit-a
+//https://stackoverflow.com/questions/19345689/mysql-exclude-all-blocked-users-from-the-results
 session_start();
 // Register the autoloader
 spl_autoload_register(function($classname) {
