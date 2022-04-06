@@ -425,14 +425,7 @@ class PokemonController {
                 // $list=print_r($friendList);
                 }
            
-        }
-        // $user = $this->getCurrentUser();
-
-        // $friendList = $this->db->query("select user2 from project_friends where user1=?", "i", $user["id"]);
-        // $friendList2 = $this->db->query("select user1 from project_friends where user2=?", "i", $user["id"]);
-        // $list="";
-        
-    
+        } 
                
         include("templates/addFriends.php");
     }
