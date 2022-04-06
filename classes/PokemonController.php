@@ -32,9 +32,9 @@ class PokemonController {
             case "viewRequests":
                 $this->viewRequests();
                 break;
-            case "catch":
+            /* case "catch":
                 $this->catchPokemon();
-                break;
+                break; */
             case "viewFriends":
                 $this->viewFriends();
                 break;
@@ -52,8 +52,16 @@ class PokemonController {
     }
 
     private function destroySession() {
+        $this->clearCookies();
         session_destroy();   
         header("Location: ?command=login");
+    }
+
+    private function clearCookies() {
+        setcookie("pkmnname", "", time()-3600);
+        setcookie("picture", "", time()-3600);
+        setcookie("type1", "", time()-3600);
+        setcookie("type2", "", time()-3600);
     }
 
     private function login() {
@@ -131,7 +139,7 @@ class PokemonController {
             if($_POST["wild_pokemon"] == "Ignore"){
                 include("templates/explore.php");
             }else{
-                if(isset($_POST["pokemonId"])){
+                if(isset($_POST["pkmnname"])){
                     $pokemonId=$_POST["pokemonId"];
                     echo "<script>console.log('Debug Objects: GOT THE THING $pokemonId ' );</script>";
                 }
@@ -141,6 +149,33 @@ class PokemonController {
        
     }
     private function explore(){
+        $user = $this->getCurrentUser();
+
+        if(isset($_POST["wild_pokemon"])){
+            if($_POST["wild_pokemon"] == "Ignore"){
+                // bug: clicking ignore makes the map unclickable
+                $this->clearCookies();
+                header("Location: ?command=explore");
+                //include("templates/explore.php");
+            }else{
+                if(isset($_POST["pkmnname"])) {
+                    // get the pokemon information
+                    $name = $_COOKIE["pkmnname"];
+                    $picture = $_COOKIE["picture"];
+                    $type1 = $_COOKIE["type1"];
+                    $type2 = $_COOKIE["type2"];
+                    $insert = $this->db->query("insert into project_caughtpokemon (userid, name, type1, type2, picture, is_on_team) values (?, ?, ?, ?, ?, ?);", 
+                                        "issssi", $user["id"], $name, $type1, $type2, $picture, 0);
+
+                    // reset cookies and redirect
+                    $this->clearCookies();
+                    $_SESSION["recentlycaught"] = true;
+                    header("Location: ?command=profile");
+
+                    // add something to create option to add to team?
+                }
+            }
+        }
       
         include("templates/explore.php");
     }
@@ -206,8 +241,58 @@ class PokemonController {
     }
 
     private function profile(){
+        $user = $this->getCurrentUser();
+        $profiledata = $this->db->query("select id, email, picture, bio, username from project_user where id=?", "i", $user["id"]) ;
+        
+
+        // setting up user data
+        $name = $profiledata[0]["username"];
+        $email = $profiledata[0]["email"];
+        $id = $profiledata[0]["id"];
+
+        $bio = $profiledata[0]["bio"];
+        if(!isset($bio)){
+            $bio = "No biography yet.";
+        }
+
+        $picture = $profiledata[0]["picture"];
+        if($picture == ""){ //default image
+            $picture = "pictures/profilePics/icon.jpg"; 
+        }
+
+        // organizing pokemon data
+        $pkmn = $this->db->query("select id, name, type1, type2, picture, is_on_team 
+            from project_caughtpokemon where userid=? order by id desc limit 6 ", "i", $user['id']) ;
+        /* $pkmn = json_encode($this->db->query("select id, name, type1, type2, picture, is_on_team 
+            from project_caughtpokemon where userid=?", "i", $user['id']), JSON_PRETTY_PRINT | JSON_FORCE_OBJECT) ; */
+        $totalpk = sizeof($this->db->query("select id from project_caughtpokemon where userid=?", "i", $user['id']) );
+
+        // modifying team functions
+        if(isset($_POST["action"])){
+            switch($_POST["action"]){
+                case "teamselect":
+                    teamselect();
+                    break;
+                case "delete":
+                    release();
+                    break;
+            }
+        }
+        
+        function teamselect(){
+            
+        }
+
+        function release() {
+
+        }
        
         include("templates/profile.php");
+    }
+
+    private function getPokemonList($data) {
+
+
     }
 
     private function viewRequests(){

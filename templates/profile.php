@@ -43,27 +43,72 @@
                 <div class="col-9">
                     <h1 class="text-center">Dashboard</h1>
                     <h2>Your Team</h2>
-                    <img src="pictures/team.png" alt="picture of your team">
+                    <!--<img src="pictures/team.png" alt="picture of your team">-->
                     <p>This image will be replaced by pictures loaded from a database</p>
+                    <div class="container" id="team">
+
+                    </div>
     
                     <h2>Recently Caught</h2>
-                    <img src="pictures/lineup.jpeg" alt="picture of recently caught">
-                    <p>This image will be replaced by pictures loaded from a database</p>
+                    <div class="row" id="recents">
+                        <!-- generating cards of recently caught pokemon -->
+                        <?php foreach ($pkmn as $pokemon) { ?>
+                            <div class="col-sm-2">
+                            <div class="card text-center" style="font-size: 8pt;">
+                                <!--pokemon data -->
+                                <img src="<?php echo $pokemon["picture"]; ?>" class="card-img-top" alt="pokemon icon">
+                                <div class="card-body">
+                                <p class="card-title"><?= $pokemon["name"] ?></p>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Type 1:  <?= $pokemon["type1"] ?></li>
+                                <?php if ($pokemon["type2"] != "undefined") {?>
+                                    <li class="list-group-item">Type 2:  <?= $pokemon["type2"] ?></li>
+                                <?php } ?>
+                                <!--action buttons-->
+                                <button type="submit" class="btn btn-primary" name="teamselect">Add to Team </button>
+                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#releaseModal">
+                                    Release
+                                </button>
+                                </ul>
+                            </div>
+                            </div>
+                        <?php } ?>
+                    </div>
+
+                    <!--modal-->
+                    <div class="modal fade" id="releaseModal" tabindex="-1" aria-labelledby="releaseModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="releaseModalLabel">Releasing a Pokemon</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>This action is permanent. Continue?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary" name="delete">Continue</button>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
     
                 </div>
+
                 <div class="col-2 text-center">
                     
                     <div class="card" style="width: 18rem;">
-                        <!--<a id="lightMode">Light Mode</a>-->
-                        <img src="pictures//profilePics/icon.jpg" class="card-img-top" alt="profile icon" width="150" height="200">
+                        <img src="<?php echo $picture; ?>" class="card-img-top" alt="profile icon" width="150" height="200">
                         <div class="card-body">
-                          <h5 class="card-title">Your name here</h5>
-                          <p class="card-text">Some data about the trainer</p>
+                          <h5 class="card-title"><?= $name ?></h5>
+                          <p class="card-text"><?= $bio ?></p>
                         </div>
                         <ul class="list-group list-group-flush">
-                          <li class="list-group-item">An item </li>
-                          <li class="list-group-item">A second item</li>
-                          <li class="list-group-item">A third item</li>
+                          <li class="list-group-item">Number of friends: </li>
+                          <li class="list-group-item">Total Pokemon caught: <?=$totalpk ?></li>
+                          <!--<li class="list-group-item">A third item</li>-->
                         </ul>
                         <div class="card-body">
                           <a href="#" class="card-link">Card link</a>
@@ -77,6 +122,18 @@
         </div>
 
         <div id="footer"></div>
+
+        <script>
+            $('.button').click(function() {
+                var clickBtnValue = $(this).val();
+                var ajaxurl = 'PokemonController.php',
+                data =  {'action': clickBtnValue};
+                $.post(ajaxurl, data, function (response) {
+                    // Response div goes here.
+                    alert("action performed successfully");
+                });
+            });
+        </script>
 
     </body>
 
