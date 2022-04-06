@@ -39,6 +39,7 @@
        
         
         <div class="searchArea">
+            <?=$error_msg ?>
             <form action="?command=addFriends" method="post">
                 <button type="submit" id="search-btn">Submit</button>
                 <div class="inputDiv">

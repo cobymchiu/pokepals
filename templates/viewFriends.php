@@ -40,7 +40,7 @@
        
             
         <br><br><br> <br>
-        
+        <?=$error_msg?>
         <!-- container for all friends -->
         <div class="container" style="width:75%; height:53vh; overflow-y:scroll"> 
             <div class="friendRow"> 

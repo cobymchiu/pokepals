@@ -9,8 +9,8 @@
 //https://stackoverflow.com/questions/19345689/mysql-exclude-all-blocked-users-from-the-results
 
 //Helpers
-//Nour Goulmamine ()-helped arrange our setup.php to automate the database creation
-//Christian () - helped create the regex for password validation
+//Nour Goulmamine (ng9sc)-helped arrange database schema for friend adding
+//Christian Riewerts(car2xz) - helped create the regex for password validation
 
 session_start();
 // Register the autoloader

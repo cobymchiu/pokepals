@@ -134,20 +134,7 @@ class PokemonController {
 
     }
    
-    public function catchPokemon(){
-        if($_POST["wild_pokemon"]){
-            if($_POST["wild_pokemon"] == "Ignore"){
-                include("templates/explore.php");
-            }else{
-                if(isset($_POST["pkmnname"])){
-                    $pokemonId=$_POST["pokemonId"];
-                    echo "<script>console.log('Debug Objects: GOT THE THING $pokemonId ' );</script>";
-                }
-                //insert id into team, take to profile
-            }
-        }
-       
-    }
+ 
     private function explore(){
         $user = $this->getCurrentUser();
 
@@ -188,53 +175,39 @@ class PokemonController {
     }
     private function viewFriends(){
         $user = $this->getCurrentUser();
-
+        $error_msg="";
         $friendList = $this->db->query("select user2 from project_friends where user1=?", "i", $user["id"]);
-        $friendList2 = $this->db->query("select user1 from project_friends where user2=?", "i", $user["id"]);
+        // $friendList2 = $this->db->query("select user1 from project_friends where user2=?", "i", $user["id"]);
         $list="";
-        if(empty($friendList) && empty($friendList2)){
+        if(empty($friendList)){
             $list = "No Friends to show";
         }else{
 
             foreach($friendList as $friendId){
                 $friend = $this->db->query("select id, email, picture, bio, username from project_user where id=?", "i", $friendId["user2"]);
-               
-                $name = $friend[0]["username"];
-                $id = $friend[0]["id"];
-                $pic = $friend[0]["picture"];
                 
-                $bio = $friend[0]["bio"];
-                $list = $list . "
-                <div class='card friendColumn' style='width: 18rem;'>
-                <img class='card-img-top' src='pictures/profilePics/$pic' alt='Card image cap'>
-                <div class='card-body'>
-                  <h5 class='card-title'>@$name</h5>
-                  <p class='card-text'>$bio</p>
-                  <button class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#teamModal'>View Team</button>
-                </div>
-            </div>";
+                if($friend ===false){
+                    $error_msg = "<div class='alert alert-danger'>Error loading friends</div>";
+                }else{
+                    $name = $friend[0]["username"];
+                    $id = $friend[0]["id"];
+                    $pic = $friend[0]["picture"];
+                    
+                    $bio = $friend[0]["bio"];
+                    $list = $list . "
+                    <div class='card friendColumn' style='width: 18rem;'>
+                        <img class='card-img-top' src='pictures/profilePics/$pic' alt='Card image cap'>
+                        <div class='card-body'>
+                            <h5 class='card-title'>@$name</h5>
+                            <p class='card-text'>$bio</p>
+                            <button class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#teamModal'>View Team</button>
+                        </div>
+                    </div>";
                
-            }
-    
-            foreach($friendList2 as $friendId){
-                $friend = $this->db->query("select id, email, picture, username, bio from project_user where id=?", "i", $friendId["user1"]);
-    
-                $name = $friend[0]["username"];
-                $id = $friend[0]["id"];
-                $pic = $friend[0]["picture"];
+                    }
+                }
                 
-                $bio = $friend[0]["bio"];
-                $list = $list . "
-                <div class='card friendColumn' style='width: 18rem;'>
-                <img class='card-img-top' src='pictures/profilePics/$pic' alt='Card image cap'>
-                <div class='card-body'>
-                  <h5 class='card-title'>@$name</h5>
-                  <p class='card-text'>$bio</p>
-                  <button class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#teamModal'>View Team</button>
-                </div>
-            </div>";
-               
-            }
+    
         }
    
         include("templates/viewFriends.php");
@@ -255,8 +228,8 @@ class PokemonController {
             $bio = "No biography yet.";
         }
 
-        $picture = $profiledata[0]["picture"];
-        if($picture == ""){ //default image
+        $picture = "pictures/profilePics/".$profiledata[0]["picture"];
+        if($picture == "pictures/profilePics/"){ //default image
             $picture = "pictures/profilePics/icon.jpg"; 
         }
 
@@ -297,38 +270,42 @@ class PokemonController {
 
     private function viewRequests(){
         $user = $this->getCurrentUser();
-
+        $error_msg="";
         $requestList = $this->db->query("select requestfrom from project_friendrequest where requestto=?", "i", $user["id"]);
         
         $list="";
-        if(empty($requestList)){
+        if($requestList ===false || empty($requestList)){
             $list = "No requests to show";
         }else{
 
             foreach($requestList as $request){
                 $requestor = $this->db->query("select id, email, picture, bio, username from project_user where id=?", "i", $request["requestfrom"]);
+               if($requestor===false || empty($requestor)){
+                $error_msg = "<div class='alert alert-danger'>Error checking for user</div>";
+               }else{
+                    $name = $requestor[0]["username"];
+                    $id = $requestor[0]["id"];
+                    $pic = $requestor[0]["picture"];
+                    
+                    $bio = $requestor[0]["bio"];
+                    $list = $list . "
+                    <div class='card friendColumn' style='width: 18rem;'>
+                        <img class='card-img-top' src='pictures/profilePics/$pic' alt='Card image cap'>
+                        <div class='card-body'>
+                            <h5 class='card-title'>@$name</h5>
+                            <p class='card-text'>$bio</p>
+                            <form action='?command=acceptRequest' method='post'>
+                                <button class='btn btn-primary'>Accept</button>
+                                <input id='user_id' type='hidden' name='user_id' value='$id'>
+                            </form>
+                            <form action='?command=rejectRequest' method='post'>
+                                <button class='btn btn-primary'>Delete</button>
+                                <input id='user_id' type='hidden' name='user_id' value='$id'>
+                            </form>
+                        </div>
+                    </div>";
+               }
                
-                $name = $requestor[0]["username"];
-                $id = $requestor[0]["id"];
-                $pic = $requestor[0]["picture"];
-                
-                $bio = $requestor[0]["bio"];
-                $list = $list . "
-                <div class='card friendColumn' style='width: 18rem;'>
-                <img class='card-img-top' src='pictures/profilePics/$pic' alt='Card image cap'>
-                <div class='card-body'>
-                  <h5 class='card-title'>@$name</h5>
-                  <p class='card-text'>$bio</p>
-                  <form action='?command=acceptRequest' method='post'>
-                    <button class='btn btn-primary'>Accept</button>
-                    <input id='user_id' type='hidden' name='user_id' value='$id'>
-                </form>
-                <form action='?command=rejectRequest' method='post'>
-                    <button class='btn btn-primary'>Delete</button>
-                    <input id='user_id' type='hidden' name='user_id' value='$id'>
-                </form>
-                </div>
-            </div>";
                
             }
         }
@@ -340,6 +317,11 @@ class PokemonController {
         $user = $this->getCurrentUser();
         if(isset($_POST["user_id"])){
             $stmt = $this->db->query("insert into project_friendrequest (requestfrom, requestto) values (?, ?)", "ii", $user["id"], $_POST["user_id"]);
+            if($stmt ===false){
+                $error_msg="<div class='alert alert-danger'>Error sending request</div>";
+            }else{
+               $error_msg= "<div class='alert alert-success'>Friend request sent</div>";
+            }
         }
         header("Location: ?command=viewFriends");
         // include("templates/addFriends.php");
@@ -348,6 +330,11 @@ class PokemonController {
         $user = $this->getCurrentUser();
         if(isset($_POST["user_id"])){
             $stmt = $this->db->query("delete from project_friendrequest where requestfrom =? and requestto=?", "ii", $_POST["user_id"], $user["id"]);
+            if($stmt ===false){
+                $error_msg = "<div class='alert alert-danger'>Error rejecting request</div>";
+            }else{
+                $error_msg= "<div class='alert alert-success'>Friend request rejected</div>";
+             }
         }
         header("Location: ?command=viewRequests");
         // include("templates/addFriends.php");
@@ -357,18 +344,27 @@ class PokemonController {
         if(isset($_POST["user_id"])){
             $deleterequest = $this->db->query("delete from project_friendrequest where requestfrom =? and requestto=?", "ii", $_POST["user_id"], $user["id"]);
             $addAsFriend = $this->db->query("insert into project_friends (user1, user2) values (?,?)", "ii", $_POST["user_id"], $user["id"]);
-            
+            $addAsFriendReciprocal = $this->db->query("insert into project_friends (user1, user2) values (?,?)", "ii",$user["id"], $_POST["user_id"]);
+            if($addAsFriend ===false || $addAsFriendReciprocal ===false){
+                $error_msg = "<div class='alert alert-danger'>Error adding friend</div>";
+            }else{
+                $error_msg= "<div class='alert alert-success'>Friend added</div>";
+             }
         }
         header("Location: ?command=viewRequests");
         // include("templates/addFriends.php");
     }
-//add friends,
+
     private function addFriends(){
         $user = $this->getCurrentUser();
+        $error_msg ="";
         if(isset($_POST["username_search"]) && !empty($_POST["username_search"])){
-            $searchMatches = $this->db->query("select username, id, picture, bio from project_user where username LIKE ? and id != ? and id not in (select user1 from project_friends)", "ss", "%".$_POST["username_search"]."%", $user["id"]);
+            $searchMatches = $this->db->query("select username, id, picture, bio from project_user where username LIKE ? and id != ? and id not in (select user2 from project_friends where user1 =?) and id not in (select requestto from project_friendrequest where requestfrom=?)", "ssss", "%".$_POST["username_search"]."%", $user["id"],$user["id"], $user["id"]);
             $list="";
-            if(empty($searchMatches)){
+            if($searchMatches ===false){
+                $error_msg="<div class='alert alert-danger'>Error searching user</div>";
+                
+            }else if(empty($searchMatches)){
                 $list = "No matches for '".$_POST["username_search"]."'";
             }else{
     
@@ -397,8 +393,11 @@ class PokemonController {
                 }
             
         }else{
-            $allUsers = $this->db->query("select username, id, picture, bio from project_user where id != ? and id not in (select user1 from project_friends) limit 15", "s", $user["id"]);
-            if(empty($allUsers)){
+            $allUsers = $this->db->query("select username, id, picture, bio from project_user where id != ? and id not in (select user2 from project_friends where user1 =?) and id not in (select requestto from project_friendrequest where requestfrom=?) limit 15", "sss", $user["id"], $user["id"], $user["id"]);
+            if($allUsers === false){
+                $error_msg =  "<div class='alert alert-danger'>Error displaying users</div>";
+                
+            }  else if(empty($allUsers)){
                 $list = "No users to show";
             }else{
                 $list="";
