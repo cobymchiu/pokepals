@@ -40,11 +40,12 @@
 
         <div class="container">
             <div class="row">
+                <?php if(isset($error_msg)) $error_msg ?>
                 <div class="col-9">
                     <h1 class="text-center">Dashboard</h1>
                     <h2>Your Team</h2>
                     <!--<img src="pictures/team.png" alt="picture of your team">-->
-                    <p>This image will be replaced by pictures loaded from a database</p>
+                    <p>TBD</p>
                     <div class="container" id="team">
 
                     </div>
@@ -111,9 +112,38 @@
                           <!--<li class="list-group-item">A third item</li>-->
                         </ul>
                         <div class="card-body">
-                          <a href="#" class="card-link">Card link</a>
-                          <a href="#" class="card-link">Another link</a>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#profileModal">
+                                Edit Profile
+                            </button>
                         </div>
+                    </div>
+
+                    <!--modal-->
+                    <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+                        <form action="?command=profile" method="post" enctype="multipart/form-data">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="profileModalLabel">Edit Profile</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+
+                            <div class="modal-body justify-content center">
+                                <label for="biography" class="form-label">Change your biography</label>
+                                <input type="text" class="form-control" name="biography" id="biography" value=<?=$bio?>>
+
+                                <label for="profilepicupload" class="form-label">Change your profile picture</label>
+                                <input type="file" name="profilepicupload" value="Upload image" accept=".png, .jpg, .tiff">
+                                <input type="submit" class="btn btn-secondary" name="removepic" id="removepic" value="Remove Picture">
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary" name="submit">Submit</button>
+                            </div>
+                            </div>
+                        </div>
+                        </form>
                     </div>
     
                 </div>

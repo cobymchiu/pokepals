@@ -75,9 +75,10 @@ class PokemonController {
             }else if (empty($data)){ //if there is no user then insert them
                 if($this->validPass($_POST["password"])){
                     if($this->validEmail($_POST["email"])){
-                        $insert = $this->db->query("insert into project_user (username, email, password) values (?, ?, ?);", 
-                        "sss", $_POST["name"], $_POST["email"], 
-                        password_hash($_POST["password"], PASSWORD_DEFAULT));
+                        $picture = "pictures/profilePics/default.png";
+                        $insert = $this->db->query("insert into project_user (username, email, password, picture) values (?, ?, ?, ?);", 
+                        "ssss", $_POST["name"], $_POST["email"], 
+                        password_hash($_POST["password"], PASSWORD_DEFAULT), $picture);
                         if ($insert === false) {
                             $error_msg = "<div class='alert alert-danger'>Error creating account</div>";
                         }
@@ -196,7 +197,7 @@ class PokemonController {
                     $bio = $friend[0]["bio"];
                     $list = $list . "
                     <div class='card friendColumn' style='width: 18rem;'>
-                        <img class='card-img-top' src='pictures/profilePics/$pic' alt='Card image cap'>
+                        <img class='card-img-top' src='$pic' alt='Card image cap'>
                         <div class='card-body'>
                             <h5 class='card-title'>@$name</h5>
                             <p class='card-text'>$bio</p>
@@ -216,7 +217,7 @@ class PokemonController {
     private function profile(){
         $user = $this->getCurrentUser();
         $profiledata = $this->db->query("select id, email, picture, bio, username from project_user where id=?", "i", $user["id"]) ;
-        
+        $error_msg = "";
 
         // setting up user data
         $name = $profiledata[0]["username"];
@@ -228,9 +229,41 @@ class PokemonController {
             $bio = "No biography yet.";
         }
 
-        $picture = "pictures/profilePics/".$profiledata[0]["picture"];
-        if($picture == "pictures/profilePics/"){ //default image
-            $picture = "pictures/profilePics/icon.jpg"; 
+        $picture = $profiledata[0]["picture"];
+        if($picture == ""){ //default image
+            $picture = "pictures/profilePics/default.png"; 
+        }
+
+        $filename = "";
+        $folder = "";
+        // changing profile
+        if(isset($_POST["submit"])){
+            $filename = $_FILES["profilepicupload"]["name"];
+            if(isset($filename)){
+                $folder = "uploads/";
+                move_uploaded_file($_FILES["profilepicupload"]["tmp_name"], $folder .$filename);
+                /* if(!move_uploaded_file($_FILES["profilepicupload"]["tmp_name"], $folder .$filename)){
+                    $error_msg = "<div class='alert alert-danger'>Error loading uploading image</div>";
+                } */
+                $picture = "classes/" .$folder . basename($filename);                
+            }
+
+
+            if(isset($_POST["biography"])){
+                $bio = $_POST["biography"];
+            }
+
+            
+
+            // put in database
+            $insert = $this->db->query("update project_user set bio=?, picture=? where id=?;", "ssi", $bio, $picture, $id);
+            header("Location: ?command=profile");
+        }
+
+        if(isset($_POST["removepic"])){
+            $picture = "";
+            $insert = $this->db->query("update project_user set picture=? where id=?;", "si", $picture, $id);
+            header("Location: ?command=profile");
         }
 
         // organizing pokemon data
@@ -290,7 +323,7 @@ class PokemonController {
                     $bio = $requestor[0]["bio"];
                     $list = $list . "
                     <div class='card friendColumn' style='width: 18rem;'>
-                        <img class='card-img-top' src='pictures/profilePics/$pic' alt='Card image cap'>
+                        <img class='card-img-top' src='$pic' alt='Card image cap'>
                         <div class='card-body'>
                             <h5 class='card-title'>@$name</h5>
                             <p class='card-text'>$bio</p>
@@ -378,7 +411,7 @@ class PokemonController {
                     $bio = $matchingUser["bio"];
                     $list = $list . "
                     <div class='card friendColumn' style='width: 18rem;'>
-                    <img class='card-img-top' src='pictures/profilePics/$pic' alt='Card image cap'>
+                    <img class='card-img-top' src='$pic' alt='Card image cap'>
                     <div class='card-body'>
                       <h5 class='card-title'>@$name</h5>
                       <p class='card-text'>$bio</p>
@@ -410,7 +443,7 @@ class PokemonController {
                     $bio = $randomUser["bio"];
                     $list = $list . "
                     <div class='card friendColumn' style='width: 18rem;'>
-                    <img class='card-img-top' src='pictures/profilePics/$pic' alt='Card image cap'>
+                    <img class='card-img-top' src='$pic' alt='Card image cap'>
                     <div class='card-body'>
                       <h5 class='card-title'>@$name</h5>
                       <p class='card-text'>$bio</p>
