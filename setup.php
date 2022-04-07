@@ -36,8 +36,8 @@ if($db->query("create table project_friends (
     echo "error creating friends table<br>";
 }
 
-$db->query("drop table if exists project_friendRequest;");
-if($db->query("create table project_friendRequest (
+$db->query("drop table if exists project_friendrequest;");
+if($db->query("create table project_friendrequest (
     requestfrom int not null,
     requestto int not null,
     primary key (requestfrom, requestto)
@@ -49,8 +49,8 @@ if($db->query("create table project_friendRequest (
 
 // table to store all caught pokemon
 // includes a boolean to determine which are on the team
-$db->query("drop table if exists project_caughtPokemon;");
-if($db->query("create table project_caughtPokemon (
+$db->query("drop table if exists project_caughtpokemon;");
+if($db->query("create table project_caughtpokemon (
     id int auto_increment,
     userid int not null, -- the user who caught the pokemon
     name text not null,

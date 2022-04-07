@@ -9,6 +9,9 @@
         <meta name="author" content="Selena Johnson scj4ve">
         <meta name="description" content="map with clickable areas to catch pokemon">
         <meta name="keywords" content="feature page for sprint 2">        
+
+        <!--https://stackoverflow.com/questions/52130918/web-api-error-this-request-has-been-blocked-the-content-must-be-served-over-h-->
+        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     
         <link rel="stylesheet/less" type="text/css" href="styles/styles.less" />
         <script src="https://cdn.jsdelivr.net/npm/less@4" ></script>

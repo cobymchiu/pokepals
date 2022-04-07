@@ -133,6 +133,7 @@
                                 <input type="text" class="form-control" name="biography" id="biography" value=<?=$bio?>>
 
                                 <label for="profilepicupload" class="form-label">Change your profile picture</label>
+                                <input type="hidden" name="MAX_FILE_SIZE" value="30000" />
                                 <input type="file" name="profilepicupload" value="Upload image" accept=".png, .jpg, .tiff">
                                 <input type="submit" class="btn btn-secondary" name="removepic" id="removepic" value="Remove Picture">
                             </div>

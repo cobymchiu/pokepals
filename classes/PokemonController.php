@@ -76,9 +76,9 @@ class PokemonController {
                 if($this->validPass($_POST["password"])){
                     if($this->validEmail($_POST["email"])){
                         $picture = "pictures/profilePics/default.png";
-                        $insert = $this->db->query("insert into project_user (username, email, password, picture) values (?, ?, ?, ?);", 
-                        "ssss", $_POST["name"], $_POST["email"], 
-                        password_hash($_POST["password"], PASSWORD_DEFAULT), $picture);
+                        $insert = $this->db->query("insert into project_user (username, email, password, picture, bio) values (?, ?, ?, ?, ?);", 
+                        "sssss", $_POST["name"], $_POST["email"], 
+                        password_hash($_POST["password"], PASSWORD_DEFAULT), $picture, "");
                         if ($insert === false) {
                             $error_msg = "<div class='alert alert-danger'>Error creating account</div>";
                         }
@@ -239,13 +239,19 @@ class PokemonController {
         // changing profile
         if(isset($_POST["submit"])){
             $filename = $_FILES["profilepicupload"]["name"];
-            if(isset($filename)){
-                $folder = "uploads/";
-                move_uploaded_file($_FILES["profilepicupload"]["tmp_name"], $folder .$filename);
-                /* if(!move_uploaded_file($_FILES["profilepicupload"]["tmp_name"], $folder .$filename)){
+            if (
+                !isset($_FILES['profilepicupload']['error']) ||
+                is_array($_FILES['profilepicupload']['error'])
+            ) {
                     $error_msg = "<div class='alert alert-danger'>Error loading uploading image</div>";
-                } */
-                $picture = "classes/" .$folder . basename($filename);                
+            }
+            if($filename != ""){
+                $folder = "pictures/profilePics/";
+                $target = $folder . basename($_FILES["profilepicupload"]["name"]);
+                if(move_uploaded_file($_FILES["profilepicupload"]["tmp_name"], $target)){
+                    $error_msg = "<div class='alert alert-danger'>Error loading uploading image</div>";
+                }
+                $picture = /* "classes/" . */$folder . basename($filename);                
             }
 
 
