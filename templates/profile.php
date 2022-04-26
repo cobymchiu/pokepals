@@ -11,7 +11,7 @@
     
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous"> 
         <link rel="stylesheet/less" type="text/css" href="styles/styles.less" />
-        <link rel="stylesheet" href="./styles/profile.css" />
+        <link rel="stylesheet" href="styles/profile.css" />
 
         <script src="https://cdn.jsdelivr.net/npm/less@4" ></script>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity= "sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"> </script>
@@ -31,6 +31,7 @@
               $("#header").load("header.html"); 
               $("#footer").load("footer.html"); 
             });
+
         </script> 
             
     </head>
@@ -45,56 +46,107 @@
                     <h1 class="text-center">Dashboard</h1>
                     <h2>Your Team</h2>
                     <!--<img src="pictures/team.png" alt="picture of your team">-->
-                    <p>TBD</p>
-                    <div class="container" id="team">
-
+                    <div class="row" id="team">
+						<?php foreach ($team as $pokemon) { ?>
+							<div class="col-sm-2">
+                                <div class="card text-center" style="font-size: 12pt;">
+                                    <!--pokemon data -->
+                                    <img src="<?php echo $pokemon["picture"]; ?>" class="card-img-top" alt="pokemon icon">
+                                    <div class="card-body">
+                                    <p class="card-title"><?= $pokemon["name"] ?></p>
+                                    </div>
+                                    <ul class="list-group list-group-flush">
+									<!--hidden input for pokemon identification-->
+									<input id="pokemonid" name="pokemonid" type="hidden" value="<?=$pokemon["id"]?>">
+                                    <!--action buttons-->
+                                    <button type="submit" class="btn btn-primary" name="teamunselect">Remove from Team </button>
+                                    </ul>
+                                </div>
+                            </div>
+						<?php } ?>
                     </div>
     
                     <h2>Recently Caught</h2>
+
                     <div class="row" id="recents">
                         <!-- generating cards of recently caught pokemon -->
-                        <?php foreach ($pkmn as $pokemon) { ?>
+                        <?php  $i = 0;
+						foreach($temp as $row) { ?>
+							<div id="row<?=$i?>" class="row">
+							<?php foreach ($row as $pokemon) { ?>
                             <div class="col-sm-2">
-                            <div class="card text-center" style="font-size: 8pt;">
-                                <!--pokemon data -->
-                                <img src="<?php echo $pokemon["picture"]; ?>" class="card-img-top" alt="pokemon icon">
-                                <div class="card-body">
-                                <p class="card-title"><?= $pokemon["name"] ?></p>
+                            	<form action="?command=modifyPokemon" method="post">
+                                <div class="card text-center" style="font-size: 12pt;">
+                                    <!--pokemon data -->
+                                    <img src="<?php echo $pokemon["picture"]; ?>" class="card-img-top" alt="pokemon icon">
+                                    <div class="card-body">
+                                    	<p class="card-title"><?= $pokemon["name"] ?></p>
+                                    </div>
+                                    <ul class="list-group list-group-flush">
+									<!--hidden input for pokemon identification-->
+									<input id="pokemonid" name="pokemonid" type="hidden" value="<?=$pokemon["id"]?>">
+                                    <!--action buttons-->
+                                    <button type="submit" class="btn btn-primary" name="teamselect" 
+									<?php if($pokemon["is_on_team"] == 1) { ?> disabled <?php } ?>>
+										Add to Team 
+									</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#releaseModal">
+                                        Release
+                                    </button>
+                                    </ul>
+                            	</form>
+                                    
+
+                                    <!--modal-->
+                                    <div class="modal" id="releaseModal" tabindex="-1" aria-labelledby="releaseModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="releaseModalLabel">Releasing a Pokemon</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+												<!--todo: type confirmation and validate with js-->
+                            					<label for="validation" class="form-label">This action is permanent. <br> Please enter the word "release" to continue</label>
+												<input type="text" class="form-control" id="validation" name="validation" >
+												<p id="err" style="color: red"></p>
+											</div>
+                                            <div class="modal-footer">
+												<input id="delpokemonid" name="delpokemonid" type="hidden" value="<?=$pokemon["id"]?>">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <button id="deletepkmn" type="submit" class="btn btn-primary" name="delete" disabled>Continue</button>
+                                            </div>
+
+											</div>
+                                        </div>
+                                    </div>
+
                                 </div>
-                                <ul class="list-group list-group-flush">
-                                <li class="list-group-item">Type 1:  <?= $pokemon["type1"] ?></li>
-                                <?php if ($pokemon["type2"] != "undefined") {?>
-                                    <li class="list-group-item">Type 2:  <?= $pokemon["type2"] ?></li>
-                                <?php } ?>
-                                <!--action buttons-->
-                                <button type="submit" class="btn btn-primary" name="teamselect">Add to Team </button>
-                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#releaseModal">
-                                    Release
-                                </button>
-                                </ul>
-                            </div>
                             </div>
                         <?php } ?>
+						</div> 
+						<?php $i++; 
+						} ?>
+
                     </div>
 
-                    <!--modal-->
-                    <div class="modal fade" id="releaseModal" tabindex="-1" aria-labelledby="releaseModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="releaseModalLabel">Releasing a Pokemon</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <p>This action is permanent. Continue?</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <button type="button" class="btn btn-primary" name="delete">Continue</button>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
+					<div id="buttongroup" class="text-center">
+						<p>Select how many rows to display: </p>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" name="inlineRadioOptions" id="option1" value="option1" checked>
+							<label class="form-check-label" for="inlineRadio1">1</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" name="inlineRadioOptions" id="option2" value="option2">
+							<label class="form-check-label" for="inlineRadio2">2</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" name="inlineRadioOptions" id="option3" value="option3">
+							<label class="form-check-label" for="inlineRadio2">3</label>
+						</div>
+					</div>
+
     
                 </div>
 
@@ -164,6 +216,84 @@
                     alert("action performed successfully");
                 });
             });
+			
+			// jquery for deleting confirmation
+			$("#validation").keyup(function() {
+				var match = false;
+				if($(this).val() == "release") {
+					match = true;
+				}
+
+				if(match) {
+					$("#deletepkmn").removeAttr('disabled');
+					$("#err").html("");
+				} else {
+					$("#err").html("You must enter the word to continue");
+				}
+			});
+
+			// jquery for radio button
+			if($("#option1").prop("checked", true)){
+				$("#row1").attr("hidden", true);
+				$("#row2").attr("hidden", true);
+				console.log("selected 1");
+			} 
+
+			$("#buttongroup input:radio").click(function() {
+				if($(this).val() == "option1"){
+					$("#row1").attr("hidden", true);
+					$("#row2").attr("hidden", true);
+				} else if($(this).val() == "option2"){
+					$("#row1").attr("hidden", false);
+					$("#row2").attr("hidden", true);
+				} else if($(this).val() == "option3"){
+					$("#row1").attr("hidden", false);
+					$("#row2").attr("hidden", false);
+				}
+			});
+
+			/* function changeRows () {
+				if($("#option1").prop("checked", true)){
+					$("#row1").attr("hidden", true);
+					$("#row2").attr("hidden", true);
+				} else if($("#option2").prop("checked", true)){
+					$("#row1").attr("hidden", false);
+					$("#row2").attr("hidden", true);
+				} else if($("#option3").prop("checked", true)){
+					$("#row1").attr("hidden", false);
+					$("#row2").attr("hidden", false);
+				}
+			} */
+			
+			// script to populate the team -- based on lecture trivia example
+			var pokemonList = null;
+
+			function addToTeam() {
+
+				var ajax = new XMLHttpRequest();
+				ajax.open("GET", "?command=getTeam", true);
+				ajax.responseType = "json";
+				ajax.send(null);
+
+				// when load succeeds
+				ajax.addEventListener("load", function() {
+					// get the team
+					if(this.status == 200) {
+						pokemonList = JSON.parse(this.response);
+						displayTeam();
+					}
+				});
+				
+				// when there's an error
+				ajax.addEventListener("error", function() {
+					document.getElementById("team").innerHTML = "<div>No team to display</div>";
+				});
+			}
+
+			// displays team
+			function displayTeam() {
+				document.getElementById("team").innerHTML = "<div>pokemonList[0]</div>";
+			}
         </script>
 
     </body>
