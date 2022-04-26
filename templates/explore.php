@@ -33,14 +33,23 @@
         </script> 
 
 <script>
+    var pokemon= {
+        name:"",
+        type1:"",
+        type2:""
+    };
+    const caughtPokemon = () => alert(pokemon.name+" was caught!");
     $(document).ready(function(e) {
+        // console.log($("#catch").html());
+        // $("#img01").hover(alert("hovering"));
+
         $('img[usemap]').rwdImageMaps(); //resize when document size is changed
-        
+        $("#catch").click(caughtPokemon)
         $('area').on('click', async function() { //do this when an area is clicked
             $(".modal-body").html("Searching for Pokemon...");
             // call for pokemon of a certain type
             var pokemon_type = this.id;
-            console.log(pokemon_type)
+            // console.log(pokemon_type)
             const api_url = "https://pokeapi.co/api/v2/type/" + pokemon_type;
             const response = await fetch(api_url);
             const data = await response.json();
@@ -53,19 +62,27 @@
             // send this pokemon's name to the modal body
             const pokemon_details = await fetch("https://pokeapi.co/api/v2/pokemon/"+chosen_pokemon_name);
             const result = await pokemon_details.json();
+            console.log(result); //stats 0125
+            var stats_list =[];
+            result["stats"].forEach(stat => {
+                stats_list.push([stat["base_stat"],stat['stat']])
+            })
+            console.log(stats_list);
             var types_list=[];
             
             result["types"].forEach(element => {
                 types_list.push(element["type"]["name"])
             });
-            console.log("res is ", result);
-            console.log("res is ", result["id"]);
+            // console.log("res is ", result);
+            // console.log("res is ", result["id"]);
             var modalImg = document.getElementById("img01"); //space where picture will go in the modal
             modalImg.src = result["sprites"]["front_default"]; //url for image
             var labelName = document.getElementById("wild_pokemon_id");
             labelName.value = result["id"];
             $(".modal-body").html(chosen_pokemon_name +" <br>"+ types_list);
-
+            pokemon.name=chosen_pokemon_name;
+            pokemon.type1=types_list[0];
+            pokemon.type2=types_list[1];
             // set cookies to be read from php; source = https://www.w3schools.com/js/js_cookies.asp
             document.cookie = "pkmnname=" + chosen_pokemon_name + ";";
             document.cookie = "picture=" + result["sprites"]["front_default"] + ";";
@@ -96,21 +113,22 @@
                 <area id="flying" data-bs-toggle="modal" data-bs-target="#exampleModal" coords="560,135,801,230,818,144" shape="poly">
             </map>
         <!-- </div> -->
-
+        <!-- <div id = "caught"><?=$caught?></div> -->
         <!-- Modal -->
         
         <div class="modal" id="exampleModal" aria-hidden="true">
+          
         <form action="?command=explore" method="post">
             <div class="modal-content modal-dialog">
                 <div class="modal-body">Searching for Pokemon...</div>
                 <img class="modal-content" src="..." alt="image of pokemon" id="img01">
                 <div class="modal-footer">
                     
-                        <input type="submit" name="wild_pokemon" class="btn btn-secondary" data-bs-dismiss="modal" value="Catch">
-                        <input type="submit" name="wild_pokemon" class="btn btn-secondary" data-bs-dismiss="modal" value="Ignore">
+                        <input type="submit" id="catch" name="wild_pokemon" class="btn btn-secondary" data-bs-dismiss="modal" value="Catch">
+                        <input type="submit" id= "ignore" name="wild_pokemon" class="btn btn-secondary" data-bs-dismiss="modal" value="Ignore">
                         <input id="wild_pokemon_id" type="hidden" name="pok" value="9">
                         <!--passing info from cookie to database-->
-                        <input type="hidden" name="pkmnname" value="<?= $_COOKIE["pkmnname"] ?>" >
+                        <input type="hidden" id="pkmnname" name="pkmnname" value="<?= $_COOKIE["pkmnname"] ?>" >
                         <input type="hidden" name="picture" value="<?= $_COOKIE["picture"] ?>">
                         <input type="hidden" name="type1" value="<?= $_COOKIE["type1"] ?>">
                         <input type="hidden" name="type2" value="<?= $_COOKIE["type2"] ?>">

@@ -8,7 +8,6 @@ class PokemonController {
     public function __construct($command) {
 
         $this->command = $command;
-
         $this->db = new Database();
     }
 
@@ -138,12 +137,14 @@ class PokemonController {
  
     private function explore(){
         $user = $this->getCurrentUser();
-
+        
         if(isset($_POST["wild_pokemon"])){
             if($_POST["wild_pokemon"] == "Ignore"){
                 // bug: clicking ignore makes the map unclickable
                 $this->clearCookies();
+               
                 header("Location: ?command=explore");
+               
                 //include("templates/explore.php");
             }else{
                 if(isset($_POST["pkmnname"])) {
@@ -157,9 +158,11 @@ class PokemonController {
 
                     // reset cookies and redirect
                     $this->clearCookies();
+                   
                     $_SESSION["recentlycaught"] = true;
                     header("Location: ?command=profile");
-
+                   
+                    //set sectoin to be true, in doc.ready
                     // add something to create option to add to team?
                 }
             }
@@ -180,7 +183,9 @@ class PokemonController {
         $friendList = $this->db->query("select user2 from project_friends where user1=?", "i", $user["id"]);
         // $friendList2 = $this->db->query("select user1 from project_friends where user2=?", "i", $user["id"]);
         $list="";
-        if(empty($friendList)){
+        if($friendList === false){
+            $list="Error retrieving friends";
+        }else if (empty($friendList)){
             $list = "No Friends to show";
         }else{
 
