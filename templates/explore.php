@@ -36,12 +36,22 @@
     var pokemon= {
         name:"",
         type1:"",
-        type2:""
+        type2:"",
+        pic:"",
+        back_pic:""
     };
     const caughtPokemon = () => alert(pokemon.name+" was caught!");
     $(document).ready(function(e) {
         // console.log($("#catch").html());
-        // $("#img01").hover(alert("hovering"));
+        // $("#img01").hover(alert("hovering"));4
+        var img = document.getElementById('img01');
+        img.addEventListener('mouseenter', function() {
+    this.src = pokemon.back_pic;
+}, false);
+
+img.addEventListener('mouseleave', function() {
+    this.src = pokemon.pic;
+}, false);
 
         $('img[usemap]').rwdImageMaps(); //resize when document size is changed
         $("#catch").click(caughtPokemon)
@@ -83,6 +93,8 @@
             pokemon.name=chosen_pokemon_name;
             pokemon.type1=types_list[0];
             pokemon.type2=types_list[1];
+            pokemon.pic =result["sprites"]["front_default"];
+            pokemon.back_pic = result["sprites"]["back_default"];
             // set cookies to be read from php; source = https://www.w3schools.com/js/js_cookies.asp
             document.cookie = "pkmnname=" + chosen_pokemon_name + ";";
             document.cookie = "picture=" + result["sprites"]["front_default"] + ";";
