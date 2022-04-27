@@ -1,4 +1,6 @@
-
+.card, .btn {
+    font-size: 10pt !important;
+}
 
 /* MODAL */
 .modal-backdrop.fade.in{
