@@ -333,6 +333,7 @@ class PokemonController {
     }
 
     public function getPokemonInfo() {
+        $user = $this->getCurrentUser();
         $pkmn = $this->db->query("select id, name, type1, type2, picture, is_on_team 
         from project_caughtpokemon where userid=? and is_on_team=1 limit 6;", "i", $user['id']) ;
 

@@ -58,7 +58,7 @@
 									<!--hidden input for pokemon identification-->
 									<input id="pokemonid" name="pokemonid" type="hidden" value="<?=$pokemon["id"]?>">
                                     <!--action buttons-->
-                                    <button type="button" class="btn btn-primary" id="detailsbutton" name="detailsbutton" data-bs-toggle="modal" data-bs-target="#detailModal">Details </button>
+                                    <button type="button" onclick ='getDetails()'class="btn btn-primary" id="detailsbutton" name="detailsbutton" data-bs-toggle="modal" data-bs-target="#detailModal">Details </button>
                                     <button type="submit" class="btn btn-secondary" name="teamunselect">Remove from Team </button>
                                     </ul>
                                 </div>
@@ -95,29 +95,19 @@
         <script>
 			
 			// script to generate pokemon details -- based on lecture trivia example
-			var details = null;
+			var details = 'hi';
 
 			function getDetails() {
-
-				var ajax = new XMLHttpRequest();
-				ajax.open("GET", "?command=getPokemonInfo", true);
-				ajax.responseType = "json";
-				ajax.send(null);
-
-				// when load succeeds
-				ajax.addEventListener("load", function() {
-					// get the team
-					if(this.status == 200) {
-						details = this.response;
-                        console.log("data: " + details);
-						displayInfo();
-					}
-				});
-				
-				// when there's an error
-				ajax.addEventListener("error", function() {
-					document.getElementById("data").innerHTML = "<div>No team to display</div>";
-				});
+                                
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("data").innerHTML =
+                this.responseText;
+                }
+                };
+                xhttp.open("GET", "?command=getPokemonInfo", true);
+                xhttp.send();
 			}
 
 			// displays team
