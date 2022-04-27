@@ -40,6 +40,15 @@ class PokemonController {
             case "profile":
                 $this->profile();
                 break;
+            case "modifyPokemon":
+                $this->modifyPokemon();
+                break;
+            case "getTeam":
+                $this->getTeam();
+                break;
+            case "myTeam":
+                $this->myTeam();
+                break;
             case "logout":
                 $this->destroySession();
                 break;
@@ -279,37 +288,77 @@ class PokemonController {
 
         // organizing pokemon data
         $pkmn = $this->db->query("select id, name, type1, type2, picture, is_on_team 
-            from project_caughtpokemon where userid=? order by id desc limit 6 ", "i", $user['id']) ;
+            from project_caughtpokemon where userid=? order by id desc", "i", $user['id']) ;
+        // split up into rows of 6
+        $temp = array_chunk($pkmn, 6, true);
+        $temp = array_slice($temp, 0,3); // should just be three rows
+        //$row1 = $temp[0]; $row2 = $temp[1]; $row3 = $temp[2];
+
         /* $pkmn = json_encode($this->db->query("select id, name, type1, type2, picture, is_on_team 
             from project_caughtpokemon where userid=?", "i", $user['id']), JSON_PRETTY_PRINT | JSON_FORCE_OBJECT) ; */
         $totalpk = sizeof($this->db->query("select id from project_caughtpokemon where userid=?", "i", $user['id']) );
+        $team = $this->db->query("select id, name, type1, type2, picture, is_on_team 
+        from project_caughtpokemon where userid=? and is_on_team=1 limit 6;", "i", $user['id']) ;
 
-        // modifying team functions
-        if(isset($_POST["action"])){
-            switch($_POST["action"]){
-                case "teamselect":
-                    teamselect();
-                    break;
-                case "delete":
-                    release();
-                    break;
-            }
-        }
-        
-        function teamselect(){
-            
-        }
 
-        function release() {
-
-        }
-       
         include("templates/profile.php");
     }
 
-    private function getPokemonList($data) {
+    public function modifyPokemon() {
+        $user = $this->getCurrentUser();
+        $pkmn = $this->db->query("select id, name, type1, type2, picture, is_on_team 
+            from project_caughtpokemon where userid=?", "i", $user['id']) ;
+        $error_msg = "";
 
+        // modifying team functions
+        if(isset($_POST["teamselect"])){
+            // modify
+            $this->db->query("update project_caughtpokemon set is_on_team = 1 where id=?", "i", $_POST['pokemonid']);
+            header("Location: ?command=profile");
+        }
+        
+        if(isset($_POST["delete"])) {
+            // release pokemon
+            $this->db->query("delete from project_caughtpokemon where id=?", "i", $_POST['delpokemonid']);
+            header("Location: ?command=profile");
+        }
 
+        
+
+    }
+
+    public function getPokemonInfo() {
+        $pkmn = $this->db->query("select id, name, type1, type2, picture, is_on_team 
+        from project_caughtpokemon where userid=? and is_on_team=1 limit 6;", "i", $user['id']) ;
+
+        if(!isset($pkmn[0])) {
+            die("Nothing on team");
+        }
+
+        header("Content-type: application/json");
+        echo json_encode($pkmn, JSON_PRETTY_PRINT);
+    }
+
+    public function myTeam() {
+        $user = $this->getCurrentUser();
+        $team = $this->db->query("select id, name, type1, type2, picture, is_on_team 
+        from project_caughtpokemon where userid=? and is_on_team=1 limit 6;", "i", $user['id']) ;
+        $error_msg = "";
+
+        // modifying team functions
+        if(isset($_POST["teamselect"])){
+            // modify
+            $this->db->query("update project_caughtpokemon set is_on_team = 1 where id=?", "i", $_POST['pokemonid']);
+            header("Location: ?command=myTeam");
+        }
+        
+        if(isset($_POST["delete"])) {
+            // release pokemon
+            $this->db->query("delete from project_caughtpokemon where id=?", "i", $_POST['delpokemonid']);
+            header("Location: ?command=myTeam");
+        }
+
+        include("templates/viewTeam.php");
     }
 
     private function viewRequests(){
