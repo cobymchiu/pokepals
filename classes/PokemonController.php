@@ -49,6 +49,9 @@ class PokemonController {
             case "myTeam":
                 $this->myTeam();
                 break;
+            case "getPokemonInfo":
+                $this->getPokemonInfo();
+                break;
             case "logout":
                 $this->destroySession();
                 break;

@@ -16,7 +16,13 @@
 
         <meta name="author" content="Coby Chiu cc6hkb">
         <meta name="description" content="home page of website">
-        <meta name="keywords" content="feature page for sprint 2">        
+        <meta name="keywords" content="feature page for sprint 2">    
+        
+        <script
+            src="https://code.jquery.com/jquery-3.3.1.js"
+            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+            crossorigin="anonymous">
+        </script>
     
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous"> 
         <link rel="stylesheet/less" type="text/css" href="styles/styles.less" />
@@ -57,7 +63,7 @@
 
                 <!-- Login Side -->
                 <div class="col-5 text-center">
-                    <form action="?command=login" method="post">
+                    <form id="loginform" action="?command=login" method="post">
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
                             <input type="email" class="form-control" id="email" name="email"/>
@@ -71,8 +77,9 @@
                             <input type="password" class="form-control" id="password" name="password"/>
                         </div>
                         <?=$error_msg?>
+                        <p id="err" style="color: red;"></p>
                         <div class="text-center">                
-                            <button type="submit" class="btn btn-primary">Login</button>
+                            <button id="login" type="submit" class="btn btn-primary" disabled>Login</button>
                         </div>
                     </form>
                 </div>
@@ -110,6 +117,26 @@
                 </ul>
             </footer>
         </div>
+        <script>
+            // validates that all entries have input
+            $("#loginform input").keyup(function() {
+                var valid = true;
+                $("input").each(function() {
+                    var element = $(this);
+                    if (element.val() == "") {
+                        valid = false;
+                    }
+                });
+
+				if(valid) {
+					$("#login").removeAttr('disabled');
+					$("#err").html("");
+				} else {
+					$("#err").html("Please fill all entries");
+				}
+			});
+        </script>
+
     </body>
 
 </html>

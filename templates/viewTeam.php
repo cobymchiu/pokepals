@@ -80,7 +80,7 @@
 
                 <div class="modal-body justify-content center">
                    <!-- put data from async function here -->
-                   <p id="data"> </p>
+                   <p id="data"> Testing </p>
                 </div>
 
                 <div class="modal-footer">
@@ -109,21 +109,23 @@
 					// get the team
 					if(this.status == 200) {
 						details = this.response;
+                        console.log("data: " + details);
 						displayInfo();
 					}
 				});
 				
 				// when there's an error
 				ajax.addEventListener("error", function() {
-					document.getElementById("team").innerHTML = "<div>No team to display</div>";
+					document.getElementById("data").innerHTML = "<div>No team to display</div>";
 				});
 			}
 
 			// displays team
 			function displayInfo() {
 				document.getElementById("data").innerHTML = details;
-                console.log("data: " + details);
 			}
+
+            //getDetails();
         </script>
 
     </body>
