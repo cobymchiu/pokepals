@@ -56,6 +56,7 @@ if($db->query("create table project_caughtpokemon (
     name text not null,
     type1 text not null,
     type2 text not null,
+    basestat int not null,
     picture text not null,
     is_on_team bit not null, -- stores team status as bit https://www.databasestar.com/sql-boolean-data-type/#:~:text=There%20is%20no%20boolean%20data,TRUE%20and%200%20for%20FALSE.
     -- add more information as we see fit

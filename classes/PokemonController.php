@@ -73,6 +73,7 @@ class PokemonController {
         setcookie("picture", "", time()-3600);
         setcookie("type1", "", time()-3600);
         setcookie("type2", "", time()-3600);
+        setcookie("basestat", "", time()-3600);
     }
 
     private function login() {
@@ -165,8 +166,11 @@ class PokemonController {
                     $picture = $_COOKIE["picture"];
                     $type1 = $_COOKIE["type1"];
                     $type2 = $_COOKIE["type2"];
-                    $insert = $this->db->query("insert into project_caughtpokemon (userid, name, type1, type2, picture, is_on_team) values (?, ?, ?, ?, ?, ?);", 
-                                        "issssi", $user["id"], $name, $type1, $type2, $picture, 0);
+                    $basestat = $_COOKIE["basestat"];
+                    $insert = $this->db->query("
+                    insert into project_caughtpokemon (userid, name, type1, type2, basestat, picture, is_on_team) 
+                    values (?, ?, ?, ?, ?, ?, ?);", 
+                    "isssisi", $user["id"], $name, $type1, $type2, $basestat, $picture, 0);
 
                     // reset cookies and redirect
                     $this->clearCookies();
@@ -174,8 +178,6 @@ class PokemonController {
                     $_SESSION["recentlycaught"] = true;
                     header("Location: ?command=profile");
                    
-                    //set sectoin to be true, in doc.ready
-                    // add something to create option to add to team?
                 }
             }
         }
@@ -192,6 +194,7 @@ class PokemonController {
     private function viewFriends(){
         $user = $this->getCurrentUser();
         $error_msg="";
+        $friendpkmn = "";
         $friendList = $this->db->query("select user2 from project_friends where user1=?", "i", $user["id"]);
         // $friendList2 = $this->db->query("select user1 from project_friends where user2=?", "i", $user["id"]);
         $list="";
@@ -203,7 +206,7 @@ class PokemonController {
 
             foreach($friendList as $friendId){
                 $friend = $this->db->query("select id, email, picture, bio, username from project_user where id=?", "i", $friendId["user2"]);
-                
+
                 if($friend ===false){
                     $error_msg = "<div class='alert alert-danger'>Error loading friends</div>";
                 }else{
@@ -213,7 +216,7 @@ class PokemonController {
                     
                     $bio = $friend[0]["bio"];
                     $list = $list . "
-                    <div class='card friendColumn' style='width: 18rem;'>
+                    <div id=friendcard class='card friendColumn' style='width: 18rem;'>
                         <img class='card-img-top' src='$pic' alt='Card image cap'>
                         <div class='card-body'>
                             <h5 class='card-title'>@$name</h5>
@@ -221,9 +224,13 @@ class PokemonController {
                             <button class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#teamModal'>View Team</button>
                         </div>
                     </div>";
+
+                    $friendpkmn = $this->db->query("select id, name, picture, is_on_team 
+                    from project_caughtpokemon where userid=? and is_on_team=1 limit 6;", "i", $id) ;
+
                
-                    }
                 }
+            }
                 
     
         }
@@ -309,7 +316,7 @@ class PokemonController {
         include("templates/profile.php");
     }
 
-    public function modifyPokemon() {
+    private function modifyPokemon() {
         $user = $this->getCurrentUser();
         $pkmn = $this->db->query("select id, name, type1, type2, picture, is_on_team 
             from project_caughtpokemon where userid=?", "i", $user['id']) ;
@@ -317,8 +324,12 @@ class PokemonController {
 
         // modifying team functions
         if(isset($_POST["teamselect"])){
-            // modify
             $this->db->query("update project_caughtpokemon set is_on_team = 1 where id=?", "i", $_POST['pokemonid']);
+            header("Location: ?command=profile");
+        }
+
+        if(isset($_POST["teamunselect"])){
+            $this->db->query("update project_caughtpokemon set is_on_team = 0 where id=?", "i", $_POST['pokemonid']);
             header("Location: ?command=profile");
         }
         
@@ -334,7 +345,7 @@ class PokemonController {
 
     public function getPokemonInfo() {
         $user = $this->getCurrentUser();
-        $pkmn = $this->db->query("select id, name, type1, type2, picture, is_on_team 
+        $pkmn = $this->db->query("select id, name, type1, type2, basestat 
         from project_caughtpokemon where userid=? and is_on_team=1 limit 6;", "i", $user['id']) ;
 
         if(!isset($pkmn[0])) {
@@ -345,7 +356,7 @@ class PokemonController {
         echo json_encode($pkmn, JSON_PRETTY_PRINT);
     }
 
-    public function myTeam() {
+    private function myTeam() {
         $user = $this->getCurrentUser();
         $team = $this->db->query("select id, name, type1, type2, picture, is_on_team 
         from project_caughtpokemon where userid=? and is_on_team=1 limit 6;", "i", $user['id']) ;

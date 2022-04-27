@@ -49,6 +49,7 @@
                     <div class="row" id="team" >
 						<?php foreach ($team as $pokemon) { ?>
 							<div class="col-sm-2">
+                            	<form action="?command=modifyPokemon" method="post">
                                 <div class="card text-center" style="font-size: 12pt;">
                                     <!--pokemon data -->
                                     <img src="<?php echo $pokemon["picture"]; ?>" class="card-img-top" alt="pokemon icon">
@@ -62,6 +63,7 @@
                                     <button type="submit" class="btn btn-primary" name="teamunselect">Remove from Team </button>
                                     </ul>
                                 </div>
+                            	</form>
                             </div>
 						<?php } ?>
                     </div>
@@ -72,57 +74,58 @@
                         <!-- generating cards of recently caught pokemon -->
                         <?php  $i = 0;
 						foreach($temp as $row) { ?>
-							<div id="row<?=$i?>" class="row"  style="margin-bottom: 20px">
+						<div id="row<?=$i?>" class="row"  style="margin-bottom: 20px">
 							<?php foreach ($row as $pokemon) { ?>
                             <div class="col-sm-2">
                             	<form action="?command=modifyPokemon" method="post">
-                                <div class="card text-center" style="font-size: 10pt;">
-                                    <!--pokemon data -->
-                                    <img src="<?php echo $pokemon["picture"]; ?>" class="card-img-top" alt="pokemon icon">
-                                    <div class="card-body">
-                                    	<p class="card-title"><?= $pokemon["name"] ?></p>
-                                    </div>
-                                    <ul class="list-group list-group-flush">
-									<!--hidden input for pokemon identification-->
-									<input id="pokemonid" name="pokemonid" type="hidden" value="<?=$pokemon["id"]?>">
-                                    <!--action buttons-->
-                                    <button type="submit" class="btn btn-primary" name="teamselect" 
-									<?php if($pokemon["is_on_team"] == 1) { ?> disabled <?php } ?>>
-										Add to Team 
-									</button>
-                                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#releaseModal">
-                                        Release
-                                    </button>
-                                    </ul>
-                            	</form>
+									<div class="card text-center" style="font-size: 10pt;">
+										<!--pokemon data -->
+										<img src="<?php echo $pokemon["picture"]; ?>" class="card-img-top" alt="pokemon icon">
+										<div class="card-body">
+											<p class="card-title"><?= $pokemon["name"] ?></p>
+										</div>
+										<ul class="list-group list-group-flush">
+										<!--hidden input for pokemon identification-->
+										<input id="pokemonid" name="pokemonid" type="hidden" value="<?=$pokemon["id"]?>">
+										<!--action buttons-->
+										<button type="submit" class="btn btn-primary" name="teamselect" 
+										<?php if($pokemon["is_on_team"] == 1) { ?> disabled <?php } ?>>
+											Add to Team 
+										</button>
+										<button type="button" class="btn btn-secondary" onclick="setPokemonId(<?=$pokemon['id']?>)" 
+										data-bs-toggle="modal" data-bs-target="#releaseModal">
+											Release
+										</button>
+										</ul>
+									</div>
                                     
 
-                                    <!--modal-->
-                                    <div class="modal" id="releaseModal" tabindex="-1" aria-labelledby="releaseModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
+									<!--modal-->
+									<div class="modal" id="releaseModal" tabindex="-1" aria-labelledby="releaseModalLabel" aria-hidden="true">
+										<div class="modal-dialog">
+											<div class="modal-content">
 
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="releaseModalLabel">Releasing a Pokemon</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
+											<div class="modal-header">
+												<h5 class="modal-title" id="releaseModalLabel">Releasing a Pokemon</h5>
+												<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+											</div>
+											<div class="modal-body">
 												<!--todo: type confirmation and validate with js-->
-                            					<label for="validation" class="form-label">This action is permanent. <br> Please enter the word "release" to continue</label>
+												<label for="validation" class="form-label">This action is permanent. <br> Please enter the word "release" to continue</label>
 												<input type="text" class="form-control" id="validation" name="validation" >
 												<p id="err" style="color: red"></p>
 											</div>
-                                            <div class="modal-footer">
-												<input id="delpokemonid" name="delpokemonid" type="hidden" value="<?=$pokemon["id"]?>">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                <button id="deletepkmn" type="submit" class="btn btn-primary" name="delete" disabled>Continue</button>
-                                            </div>
+											<div class="modal-footer">
+													<input id="delpokemonid" name="delpokemonid" type="hidden" value="">
+													<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+													<button id="deletepkmn" type="submit" class="btn btn-primary" onclick="getPokemonId()" name="delete" disabled>Continue</button>
+											</div>
 
 											</div>
-                                        </div>
-                                    </div>
+										</div>
+									</div>
 
-                                </div>
+                            	</form>
                             </div>
                         <?php } ?>
 						</div> 
@@ -207,7 +210,7 @@
         <div id="footer"></div>
 
         <script>
-            $('.button').click(function() {
+            /* $('.button').click(function() {
                 var clickBtnValue = $(this).val();
                 var ajaxurl = 'PokemonController.php',
                 data =  {'action': clickBtnValue};
@@ -215,7 +218,7 @@
                     // Response div goes here.
                     alert("action performed successfully");
                 });
-            });
+            }); */
 			
 			// jquery for deleting confirmation
 			$("#validation").keyup(function() {
@@ -251,6 +254,17 @@
 					$("#row2").attr("hidden", false);
 				}
 			});
+
+			// to send correct pokemon id when deleting
+			var pokemon = "";
+			function setPokemonId(id) {
+				console.log(id);
+				pokemon = id;
+			}
+
+			function getPokemonId() {
+				document.getElementById("delpokemonid").value = pokemon;
+			}
 			
         </script>
 

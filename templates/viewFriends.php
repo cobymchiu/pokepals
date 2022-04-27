@@ -53,54 +53,55 @@
 
         <!-- Team Modal -->
         <div class="modal" id="teamModal" aria-hidden="true">
-            <div class="modal-content modal-dialog">
-                <div class="teamRow">
-                    <div class="teamColumn">
-                        <img alt="machop sprite" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/66.png">
-                        <p>Machop</p>
-                    </div>
-                    <div class="teamColumn">
-                        <img alt="hitmonlee sprite" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/106.png">
-                        <p>Hitmonlee</p>
-                    </div>
-                    <div class="teamColumn">
-                        <img alt="Tyrogue sprite" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/236.png">
-                        <p>Tyrogue </p>
-                    </div>
-                    <div class="teamColumn">
-                        <img alt="riolu sprite" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/447.png">
-                        <p>Riolu </p>
-                    </div>
-                    <div class="teamColumn">
-                        <img alt="throh sprite" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/538.png">
-                        <p>Throh</p>
-                    </div>
-                    <div class="teamColumn">
-                        <img alt="mienshao sprite" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/620.png">
-                        <p>Mienshao </p>
-                    </div>
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="profileModalLabel">Friend's Team</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-            </div>
+                
+                <div class="modal-body col-12">
+                <div id="teamrow" class="row">
+                    <?php if (sizeof($friendpkmn) == 0 ) { ?>
+                        <h2 class="text-center"> No Pokemon to display </h2>
 
-            <div class="progress">
-                <p class="health-bar">Health:</p>
-                <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-            <div class="progress">
-                <p class="agility-bar">Agility:</p>
-                <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-            <div class="progress">
-                <p class="stamina-bar">Stamina:</p>
-                <div class="progress-bar bg-warning" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-            <div class="progress">
-                <p class="power-bar">Power:</p>
-                <div class="progress-bar bg-danger" role="progressbar" style="width: 87%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-            
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <?php } else { ?>
+                    <?php foreach ($friendpkmn as $pokemon) { ?>
+                        <div id="pokemoncard" name="<?=$pokemon['name']?>" class="col-sm-4">
+                            <div class="card text-center" style="font-size: 12pt;">
+                                <!--pokemon data -->
+                                <img src="<?php echo $pokemon["picture"]; ?>" class="card-img-top" alt="pokemon icon">
+                                <!-- <div class="card-body" style="height: 200px"></div> -->
+                                <p class="card-title"><?= $pokemon["name"] ?></p>
+                                <div class="card-body"></div>
+                                
+                            </div>
+                        </div>
+
+                        <!--<div class="progress">
+                            <p class="health-bar">Health:</p>
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <div class="progress">
+                            <p class="agility-bar">Agility:</p>
+                            <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <div class="progress">
+                            <p class="stamina-bar">Stamina:</p>
+                            <div class="progress-bar bg-warning" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <div class="progress">
+                            <p class="power-bar">Power:</p>
+                            <div class="progress-bar bg-danger" role="progressbar" style="width: 87%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>-->
+                    <?php } }?>
+                </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+                </div>
             </div>
         </div>
     

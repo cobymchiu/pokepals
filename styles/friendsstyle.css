@@ -71,7 +71,7 @@
  
 
 /* MODAL */
-.modal-backdrop.fade.in{
+/* .modal-backdrop.fade.in{
   opacity: 0.9!important;
   filter: alpha(opacity=90)!important;
   }
@@ -90,22 +90,22 @@
 .modal-body{
   border:none;
   box-shadow: none;
-}
+} */
 
 
 
 /* USER INFO */
-.card{
+#friendcard .card{
   height:500px;
 }
 
-.card-img-top{
+#friendcard .card-img-top{
   height:300px;
 }
 
 
 
-/* TEAM STATS */
+/* TEAM */
 .health-bar{
     font-weight: bold;
     width:50px;

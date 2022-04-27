@@ -100,6 +100,7 @@
             document.cookie = "picture=" + result["sprites"]["front_default"] + ";";
             document.cookie = "type1=" + types_list[0] + ";";
             document.cookie = "type2=" + types_list[1] + ";";
+            document.cookie = "basestat=" + stats_list[0] + ";";
         });
     });
 </script>

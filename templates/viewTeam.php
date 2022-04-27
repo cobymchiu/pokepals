@@ -47,7 +47,7 @@
                     <!--<img src="pictures/team.png" alt="picture of your team">-->
                     <div class="row" id="team">
 						<?php foreach ($team as $pokemon) { ?>
-							<div class="col-sm-2">
+							<div id="pokemoncard" name="<?=$pokemon['name']?>" class="col-sm-2">
                                 <div class="card text-center" style="font-size: 12pt;">
                                     <!--pokemon data -->
                                     <img src="<?php echo $pokemon["picture"]; ?>" class="card-img-top" alt="pokemon icon">
@@ -58,7 +58,7 @@
 									<!--hidden input for pokemon identification-->
 									<input id="pokemonid" name="pokemonid" type="hidden" value="<?=$pokemon["id"]?>">
                                     <!--action buttons-->
-                                    <button type="button" onclick ='getDetails()'class="btn btn-primary" id="detailsbutton" name="detailsbutton" data-bs-toggle="modal" data-bs-target="#detailModal">Details </button>
+                                    <button type="button" onclick ="getDetails('<?=$pokemon['name']?>')" class="btn btn-primary" id="detailsbutton" name="detailsbutton" data-bs-toggle="modal" data-bs-target="#detailModal">Details </button>
                                     <button type="submit" class="btn btn-secondary" name="teamunselect">Remove from Team </button>
                                     </ul>
                                 </div>
@@ -74,13 +74,17 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="profileModalLabel">Pokemon Details</h5>
+                    <h5 class="modal-title" id="detail-modal-label">Pokemon Details</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
-                <div class="modal-body justify-content center">
-                   <!-- put data from async function here -->
-                   <p id="data"> Testing </p>
+                <div class="modal-body text-center col-12">
+                   <!-- put data from ajax function here -->
+                   <h6><b>Types</b></h6>
+                   <p id="type1">  </p>
+                   <p id="type2"> </p>
+                   <h6><b>Base Stat</b></h6>
+                   <p id="basestat"> </p>
                 </div>
 
                 <div class="modal-footer">
@@ -96,15 +100,20 @@
 			
 			// script to generate pokemon details -- based on lecture trivia example
 			var details = 'hi';
+            var pokemon = "";
             // https://www.w3schools.com/xml/ajax_xmlhttprequest_response.asp
-			function getDetails() {
-                                
+			function getDetails(name) {
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("data").innerHTML =
-                this.responseText;
-                }
+                    if (this.readyState == 4 && this.status == 200) {
+                        pokemon = name;   
+                        //document.getElementById("type1").innerHTML = this.responseText;
+                        details = JSON.parse(this.responseText);
+                        //console.log(pokemon);      
+                        //console.log("length of obj: " + details.length);
+                        //document.getElementById("type1").innerHTML = details.length;
+                        displayInfo();
+                    }
                 };
                 xhttp.open("GET", "?command=getPokemonInfo", true);
                 xhttp.send();
@@ -112,7 +121,24 @@
 
 			// displays team
 			function displayInfo() {
-				document.getElementById("data").innerHTML = details;
+                console.log(details);
+                var type1;
+                var type2;
+                var basestat;
+
+                // find data for the right pokemon
+                for(let i = 0; i < details.length; i++){
+                    if(details[i]["name"] == pokemon){
+                        type1 = details[i]["type1"];
+                        type2 = details[i]["type2"];
+                        basestat = details[i]["basestat"];
+                        break;
+                    }
+                }
+
+				document.getElementById("type1").innerHTML = type1;
+				document.getElementById("type2").innerHTML = type2;
+				document.getElementById("basestat").innerHTML = basestat;
 			}
 
             //getDetails();

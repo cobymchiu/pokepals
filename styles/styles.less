@@ -51,9 +51,11 @@ table {
 @import url('https://fonts.googleapis.com/css2?family=Balsamiq+Sans&display=swap | Balsamiq+Sans');
 
 @maincolor:#4f8be0;
+@secondarycolor: #75a0dd;
+@darkaccent: #0a2f63;
 
 *{
-    background-color: @maincolor;
+    //background-color: @maincolor;
     font-family: 'Balsamiq Sans', sans-serif !important;
 }
 
@@ -61,15 +63,58 @@ body{
     background-color: @maincolor !important;
 }
 
+h1, h2, h3, h4, h5, h6, p {
+    color:white;
+}
+
+.card, .modal-content{
+    background-color: @secondarycolor!important;
+}
+
+//Settings for all models
+.modal-backdrop.fade.in{
+    opacity: 0.9!important;
+    filter: alpha(opacity=90)!important;
+}
+//cntering a modal https://stackoverflow.com/questions/39627549/how-to-center-modal-to-the-center-of-screen
+/* #exampleModal{
+    width:360px;
+    height:530px;
+    margin-left: 0px;
+    padding-bottom:50px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    overflow-y: hidden;
+}
+.modal-body{
+    border:none;
+    box-shadow: none;
+}
+
+@media (max-height: 400px) {
+    .login{
+        overflow-y: scroll !important;
+        margin: 0 auto !important;
+        position: static !important;
+    }
+} */
+
+/****************** header and footer ******************/
+
 .px-2{ //footer text color
     color:rgba(255, 255, 255, 0.442) !important;
 }
 
-#navigation a:hover {
+#navigation a {
     color: white;
-  }
+}
 
+#navigation a:hover {
+    color: @darkaccent;
+}
 
+/****************** items on login page ******************/
 .carousel{
     button {
         background-color: white !important;
@@ -97,26 +142,8 @@ body{
   margin-left: auto;
   margin-right: auto;
 }
+
+/****************** items on explore page ******************/
 .exploreHeader{
     text-align: center;
-}
-  //Settings for all models
-.modal-backdrop.fade.in{
-    opacity: 0.9!important;
-    filter: alpha(opacity=90)!important;
-    }
-//cntering a modal https://stackoverflow.com/questions/39627549/how-to-center-modal-to-the-center-of-screen
-#exampleModal{
-    width:360px;
-    height:530px;
-    margin-left: 0px;
-    padding-bottom:50px;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    overflow-y: hidden;
-}
-.modal-body{
-    border:none;
-    box-shadow: none;
 }
