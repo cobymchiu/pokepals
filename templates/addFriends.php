@@ -20,17 +20,28 @@
             integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
             crossorigin="anonymous">
         </script>
-
+     
         <!--source:https://stackoverflow.com/questions/18712338/make-header-and-footer-files-to-be-included-in-multiple-html-pages-->
+
+        <link rel="stylesheet" href="styles/friendsstyle.css">
+        <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+        <title>Friends</title>
         <script> 
             $(function(){
               $("#header").load("header.html"); 
               $("#footer").load("footer.html"); 
             });
+            // const friend = () => alert("friend added");
+            
+            
         </script> 
-        <link rel="stylesheet" href="styles/friendsstyle.css">
-        <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
-        <title>Friends</title>
+        <script>
+            $(document).ready(function () {
+                $("button").click(function () {
+                    alert("friend request sent!");
+                });
+            });
+        </script>
     </head>
     <body >
  
@@ -41,7 +52,7 @@
         <div class="searchArea">
             <?=$error_msg ?>
             <form action="?command=addFriends" method="post">
-                <button type="submit" id="search-btn">Submit</button>
+                <input type="button"class="button" id="search-btn" value="Submit"></input>
                 <div class="inputDiv">
                     <input name="username_search" type="text" placeholder="Search..." id="search-bar"  />
                 </div>

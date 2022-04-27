@@ -46,12 +46,12 @@
         // $("#img01").hover(alert("hovering"));4
         var img = document.getElementById('img01');
         img.addEventListener('mouseenter', function() {
-    this.src = pokemon.back_pic;
-}, false);
+            this.src = pokemon.back_pic;
+        }, false);
 
-img.addEventListener('mouseleave', function() {
-    this.src = pokemon.pic;
-}, false);
+        img.addEventListener('mouseleave', function() {
+            this.src = pokemon.pic;
+        }, false);
 
         $('img[usemap]').rwdImageMaps(); //resize when document size is changed
         $("#catch").click(caughtPokemon)

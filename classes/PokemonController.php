@@ -339,12 +339,16 @@ class PokemonController {
                             <h5 class='card-title'>@$name</h5>
                             <p class='card-text'>$bio</p>
                             <form action='?command=acceptRequest' method='post'>
-                                <button class='btn btn-primary'>Accept</button>
-                                <input id='user_id' type='hidden' name='user_id' value='$id'>
+                                <div>
+                                    <button class='accept btn btn-primary'>Accept</button>
+                                    <input id='user_id' type='hidden' name='user_id' value='$id'>
+                                </div>
                             </form>
                             <form action='?command=rejectRequest' method='post'>
-                                <button class='btn btn-primary'>Delete</button>
-                                <input id='user_id' type='hidden' name='user_id' value='$id'>
+                                <p>
+                                    <button class='btn btn-primary'>Delete</button>
+                                    <input id='user_id' type='hidden' name='user_id' value='$id'>
+                                </p>
                             </form>
                         </div>
                     </div>";
@@ -427,7 +431,7 @@ class PokemonController {
                       <h5 class='card-title'>@$name</h5>
                       <p class='card-text'>$bio</p>
                       <form action='?command=sendRequest' method='post'>
-                        <button class='btn btn-primary'>Add Friend</button>
+                        <button class='btn btn-primary' id='add-friend'>Add Friend</button>
                         <input id='user_id' type='hidden' name='user_id' value='$id'>
                       </form>
                     </div>
@@ -459,7 +463,7 @@ class PokemonController {
                       <h5 class='card-title'>@$name</h5>
                       <p class='card-text'>$bio</p>
                       <form action='?command=sendRequest' method='post'>
-                        <button class='btn btn-primary'>Add Friend</button>
+                        <button class='btn btn-primary' id='add_friend'>Add Friend</button>
                         <input id='user_id' type='hidden' name='user_id' value='$id'>
                       </form>
                    

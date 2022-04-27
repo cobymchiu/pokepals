@@ -31,6 +31,18 @@
         <link rel="stylesheet" href="styles/friendsstyle.css">
         <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
         <title>Friends</title>
+
+
+        <script>
+            $(document).ready(function () {
+                $("div > button").click(function () {
+                    alert("friend request accepted!");
+                });
+                $("p > button").click(function () {
+                    alert("friend request rejected!");
+                });
+            });
+        </script>
     </head>
     <body >
  
