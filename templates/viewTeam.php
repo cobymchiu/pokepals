@@ -96,7 +96,7 @@
 			
 			// script to generate pokemon details -- based on lecture trivia example
 			var details = 'hi';
-
+            // https://www.w3schools.com/xml/ajax_xmlhttprequest_response.asp
 			function getDetails() {
                                 
                 var xhttp = new XMLHttpRequest();
