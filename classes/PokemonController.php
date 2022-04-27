@@ -251,6 +251,8 @@ class PokemonController {
             $picture = "pictures/profilePics/default.png"; 
         }
 
+        $totalFriends = sizeof($this->db->query("select user2 from project_friends where user1=?", "i", $user["id"]));
+
         $filename = "";
         $folder = "";
         // changing profile

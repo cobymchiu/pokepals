@@ -40,13 +40,13 @@
         <div id="header"></div>
 
         <div class="container">
-            <div class="row">
+            <div class="row" >
                 <?php if(isset($error_msg)) $error_msg ?>
                 <div class="col-9">
                     <h1 class="text-center">Dashboard</h1>
                     <h2>Your Team</h2>
                     <!--<img src="pictures/team.png" alt="picture of your team">-->
-                    <div class="row" id="team">
+                    <div class="row" id="team" >
 						<?php foreach ($team as $pokemon) { ?>
 							<div class="col-sm-2">
                                 <div class="card text-center" style="font-size: 12pt;">
@@ -66,17 +66,17 @@
 						<?php } ?>
                     </div>
     
-                    <h2>Recently Caught</h2>
 
-                    <div class="row" id="recents">
+                    <div class="row" id="recents"  style="margin-top: 10px">
+                    	<h2>Recently Caught</h2>
                         <!-- generating cards of recently caught pokemon -->
                         <?php  $i = 0;
 						foreach($temp as $row) { ?>
-							<div id="row<?=$i?>" class="row">
+							<div id="row<?=$i?>" class="row"  style="margin-bottom: 20px">
 							<?php foreach ($row as $pokemon) { ?>
                             <div class="col-sm-2">
                             	<form action="?command=modifyPokemon" method="post">
-                                <div class="card text-center" style="font-size: 12pt;">
+                                <div class="card text-center" style="font-size: 10pt;">
                                     <!--pokemon data -->
                                     <img src="<?php echo $pokemon["picture"]; ?>" class="card-img-top" alt="pokemon icon">
                                     <div class="card-body">
@@ -159,7 +159,7 @@
                           <p class="card-text"><?= $bio ?></p>
                         </div>
                         <ul class="list-group list-group-flush">
-                          <li class="list-group-item">Number of friends: </li>
+                          <li class="list-group-item">Number of friends: <?=$totalFriends?></li>
                           <li class="list-group-item">Total Pokemon caught: <?=$totalpk ?></li>
                           <!--<li class="list-group-item">A third item</li>-->
                         </ul>
@@ -251,49 +251,7 @@
 					$("#row2").attr("hidden", false);
 				}
 			});
-
-			/* function changeRows () {
-				if($("#option1").prop("checked", true)){
-					$("#row1").attr("hidden", true);
-					$("#row2").attr("hidden", true);
-				} else if($("#option2").prop("checked", true)){
-					$("#row1").attr("hidden", false);
-					$("#row2").attr("hidden", true);
-				} else if($("#option3").prop("checked", true)){
-					$("#row1").attr("hidden", false);
-					$("#row2").attr("hidden", false);
-				}
-			} */
 			
-			// script to populate the team -- based on lecture trivia example
-			var pokemonList = null;
-
-			function addToTeam() {
-
-				var ajax = new XMLHttpRequest();
-				ajax.open("GET", "?command=getTeam", true);
-				ajax.responseType = "json";
-				ajax.send(null);
-
-				// when load succeeds
-				ajax.addEventListener("load", function() {
-					// get the team
-					if(this.status == 200) {
-						pokemonList = JSON.parse(this.response);
-						displayTeam();
-					}
-				});
-				
-				// when there's an error
-				ajax.addEventListener("error", function() {
-					document.getElementById("team").innerHTML = "<div>No team to display</div>";
-				});
-			}
-
-			// displays team
-			function displayTeam() {
-				document.getElementById("team").innerHTML = "<div>pokemonList[0]</div>";
-			}
         </script>
 
     </body>
